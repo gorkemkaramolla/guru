@@ -15,7 +15,7 @@ import Link from 'next/link';
 
 import { getSession, signIn } from 'next-auth/react';
 
-const login = () => {
+const Login = () => {
   const router = useRouter();
   const { signup } = router.query;
   if (signup === 'true') return <SignupPage />;
@@ -249,4 +249,4 @@ const SignupPage = () => {
     </Container>
   );
 };
-export default login;
+export default Login;
