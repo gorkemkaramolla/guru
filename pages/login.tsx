@@ -14,6 +14,7 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 
 import { getSession, signIn } from 'next-auth/react';
+import axios from 'axios';
 
 const Login = () => {
   const router = useRouter();
@@ -129,14 +130,21 @@ const LoginPage = () => {
 };
 
 const SignupPage = () => {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
+  const [name, setName] = useState('');
+  const [surname, setSurname] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const router = useRouter();
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     // Handle form submission here
+    await axios
+      .post('/api/user', { name, surname, email, password })
+      .then((res) =>
+        res.status === 200
+          ? router.push('/')
+          : router.push('/login?signup=true')
+      );
   };
 
   return (
@@ -178,8 +186,8 @@ const SignupPage = () => {
             name='firstName'
             autoComplete='given-name'
             autoFocus
-            value={firstName}
-            onChange={(event) => setFirstName(event.target.value)}
+            value={name}
+            onChange={(event) => setName(event.target.value)}
           />
           <TextField
             variant='outlined'
@@ -190,8 +198,8 @@ const SignupPage = () => {
             label='Last Name'
             name='lastName'
             autoComplete='family-name'
-            value={lastName}
-            onChange={(event) => setLastName(event.target.value)}
+            value={surname}
+            onChange={(event) => setSurname(event.target.value)}
           />
           <TextField
             variant='outlined'

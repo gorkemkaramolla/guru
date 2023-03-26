@@ -6,7 +6,7 @@ import MenuIcon from '@mui/icons-material/MenuRounded';
 import { Avatar, Button, IconButton, Menu, MenuItem } from '@mui/material';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useSession } from 'next-auth/react';
+import { useSession, signOut } from 'next-auth/react';
 const links: { [key: string]: string } = {
   Discover: 'discover',
   Communities: 'community',
@@ -114,9 +114,11 @@ const Navbar = () => {
           </Menu>
         </div>
         {session.status === 'authenticated' ? (
-          <Avatar>
-            <img src={session.data?.user?.image!} alt='' />
-          </Avatar>
+          <div onClick={() => signOut()}>
+            <Avatar>
+              <img src={session.data?.user?.image!} alt='' />
+            </Avatar>
+          </div>
         ) : (
           <div>
             <Button
