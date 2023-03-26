@@ -1,5 +1,5 @@
 import type { ObjectId } from 'mongodb';
-export interface IArtical {
+export interface IArticle {
   _id: ObjectId;
   text: string;
   image: string;
@@ -8,7 +8,7 @@ export interface IArtical {
 }
 
 export interface IAuthor extends IUser {
-  articals: IArtical[];
+  articals: IArticle[];
 }
 
 export interface IUser {

@@ -1,4 +1,4 @@
-import { IAuthor, IArtical, IUser } from '@/types';
+import { IAuthor, IArticle, IUser } from '@/types';
 import { ObjectId } from 'mongodb';
 import mongoose, {
   SchemaDefinitionProperty,
@@ -21,7 +21,7 @@ const authorSchema = new Schema<IAuthor>({
       ] as unknown as SchemaDefinitionProperty<IUser[]>,
       publishDate: Date,
     },
-  ] as unknown as SchemaDefinitionProperty<IArtical[]>,
+  ] as unknown as SchemaDefinitionProperty<IArticle[]>,
 });
 
 export default mongoose.models.Author || mongoose.model('Author', authorSchema);
