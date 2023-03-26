@@ -6,7 +6,9 @@ const userSchema = new Schema<IUser>({
   _id: ObjectId,
   email: String,
   name: String,
-  profilePic: String,
+  surname: String,
+  password: String,
+  image: String,
 });
 
 export default mongoose.models.User || mongoose.model('User', userSchema);

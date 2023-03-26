@@ -16,7 +16,7 @@ const authorSchema = new Schema<IAuthor>({
           _id: ObjectId,
           email: String,
           name: String,
-          profilePic: String,
+          image: String,
         },
       ] as unknown as SchemaDefinitionProperty<IUser[]>,
       publishDate: Date,

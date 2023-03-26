@@ -15,5 +15,7 @@ export interface IUser {
   _id: ObjectId;
   email: string;
   name: string;
-  profilePic: string;
+  surname: string;
+  password: string;
+  image: string;
 }
