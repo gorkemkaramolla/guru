@@ -110,7 +110,7 @@ const LoginPage = () => {
         </form>
       </div>
       <div className='text-right'>
-        Don't have an account, yet?{' '}
+        Don&apost have an account, yet?{' '}
         <Link href={'/login?signup=true'} className='text-blue-600'>
           Register now!
         </Link>
