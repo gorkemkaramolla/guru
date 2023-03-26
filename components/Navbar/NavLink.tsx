@@ -1,11 +1,13 @@
-import { Button } from '@mui/material';
+// import { Button } from '@mui/material';
 import Link from 'next/link';
 import React from 'react';
-
+import { Button } from '@nextui-org/react';
 const NavLink = ({ title, path }: { title: string; path: string }) => {
   return (
-    <Link href={'/' + path} className='text-white'>
-      <Button sx={{ color: 'white' }}>{title}</Button>
+    <Link href={'/' + path}>
+      <Button color='primary' auto light>
+        {title}
+      </Button>
     </Link>
   );
 };

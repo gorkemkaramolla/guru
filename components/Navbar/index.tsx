@@ -1,12 +1,14 @@
 import React from 'react';
 import NavLink from './NavLink';
-import ShoppingCart from '@mui/icons-material/ShoppingCart';
-import LoginRounded from '@mui/icons-material/LoginRounded';
+
 import MenuIcon from '@mui/icons-material/MenuRounded';
-import { Avatar, Button, IconButton, Menu, MenuItem } from '@mui/material';
+import { IconButton, Menu, MenuItem } from '@mui/material';
+import { Button } from '@nextui-org/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useSession, signOut } from 'next-auth/react';
+import AccountButton from './AccountButton';
+import SearchBar from './SearchBar';
 const links: { [key: string]: string } = {
   Discover: 'discover',
   Communities: 'community',
@@ -40,10 +42,11 @@ const Navbar = () => {
     setPathname(router.pathname);
   }, [router.pathname]);
   return (
-    <div className='fixed top-0 flex py-2 px-4 space-x-4 justify-around items-center bg-[var(--primary-color)] w-full z-50'>
-      <img className='w-14' src='logo.png' alt='logo' />
+    <div className='fixed top-0 flex py-2 px-4 space-x-4 justify-around items-center border shadow-sm w-full z-50'>
+      <img className='h-10 hidden md:block' src='logo2.png' alt='logo' />
+      <img className='h-10 md:hidden' src='logo1.png' alt='logo' />
 
-      <div className='relative rounded-md shadow-sm '>
+      {/* <div className='relative rounded-md shadow-sm '>
         <input
           id='search'
           className='text-xs md:text-md py-2 pl-6 md:pl-10 w-full leading-3 md:leading-5 rounded-md transition duration-150 ease-in-out sm:text-sm'
@@ -64,8 +67,9 @@ const Navbar = () => {
             />
           </svg>
         </div>
-      </div>
-      <div className='hidden lg:flex space-x-4 lg:space-x-8'>
+      </div> */}
+      <SearchBar />
+      <div className='hidden lg:flex space-x-2 lg:space-x-4'>
         {Object.keys(links).map((link) => (
           <NavLink key={link} title={link} path={links[link]} />
         ))}
@@ -81,7 +85,7 @@ const Navbar = () => {
             onClick={handleClick}
             className='text-white p-0'
           >
-            <MenuIcon id='menuicon' className='text-4xl text-white' />
+            <MenuIcon id='menuicon' className='text-4xl text-[rgb(9,87,243)]' />
           </IconButton>
           <Menu
             id='long-menu'
@@ -114,26 +118,20 @@ const Navbar = () => {
           </Menu>
         </div>
         {session.status === 'authenticated' ? (
-          <div onClick={() => signOut()}>
-            <Avatar>
-              <img src={session.data?.user?.image!} alt='' />
-            </Avatar>
-          </div>
+          <AccountButton />
         ) : (
-          <div>
-            <Button
-              sx={{
-                textTransform: 'capitalize',
-                color: 'white',
-                borderRadius: '1rem',
-              }}
-              onClick={() => router.push('/login')}
-            >
+          // <div onClick={() => signOut()}>
+          //   <Avatar>
+          //     <img src={session.data?.user?.image!} alt='' />
+          //   </Avatar>
+          // </div>
+          <div className='flex gap-2'>
+            <Button rounded light auto onClick={() => router.push('/login')}>
               Login
             </Button>
             <Button
-              variant='contained'
-              sx={{ textTransform: 'capitalize', borderRadius: '1rem' }}
+              rounded
+              auto
               onClick={() => router.push('/login?signup=true')}
             >
               Sign Up
