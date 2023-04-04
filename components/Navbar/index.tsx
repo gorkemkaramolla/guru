@@ -1,6 +1,6 @@
 import React from 'react';
 import NavLink from './NavLink';
-
+import { useSSR } from '@nextui-org/react';
 import MenuIcon from '@mui/icons-material/MenuRounded';
 import { IconButton, Menu, MenuItem } from '@mui/material';
 import { Button } from '@nextui-org/react';
@@ -16,6 +16,7 @@ const links: { [key: string]: string } = {
 };
 
 const Navbar = () => {
+  const { isBrowser } = useSSR();
   const router = useRouter();
   const session = useSession();
   const [searchQuery, setSearchQuery] = React.useState('');
@@ -41,12 +42,15 @@ const Navbar = () => {
   React.useEffect(() => {
     setPathname(router.pathname);
   }, [router.pathname]);
-  return (
-    <div className='fixed top-0 flex py-2 px-4 space-x-4 justify-around items-center border shadow-sm w-full z-50'>
-      <img className='h-10 hidden md:block' src='logo2.png' alt='logo' />
-      <img className='h-10 md:hidden' src='logo1.png' alt='logo' />
+  if (isBrowser)
+    return (
+      <div className='fixed top-0 flex py-2 px-4 space-x-4 justify-around items-center border shadow-sm w-full z-50'>
+        <Link href='/'>
+          <img className='h-10 hidden md:block' src='logo2.png' alt='logo' />
+        </Link>
+        <img className='h-10 md:hidden' src='logo1.png' alt='logo' />
 
-      {/* <div className='relative rounded-md shadow-sm '>
+        {/* <div className='relative rounded-md shadow-sm '>
         <input
           id='search'
           className='text-xs md:text-md py-2 pl-6 md:pl-10 w-full leading-3 md:leading-5 rounded-md transition duration-150 ease-in-out sm:text-sm'
@@ -68,79 +72,85 @@ const Navbar = () => {
           </svg>
         </div>
       </div> */}
-      <SearchBar />
-      <div className='hidden lg:flex space-x-2 lg:space-x-4'>
-        {Object.keys(links).map((link) => (
-          <NavLink key={link} title={link} path={links[link]} />
-        ))}
-      </div>
-      <div className='flex space-x-4 items-center'>
-        <div className='lg:hidden'>
-          <IconButton
-            aria-label='more'
-            id='long-button'
-            aria-controls={open ? 'long-menu' : undefined}
-            aria-expanded={open ? 'true' : undefined}
-            aria-haspopup='true'
-            onClick={handleClick}
-            className='text-white p-0'
-          >
-            <MenuIcon id='menuicon' className='text-4xl text-[rgb(9,87,243)]' />
-          </IconButton>
-          <Menu
-            id='long-menu'
-            MenuListProps={{
-              'aria-labelledby': 'long-button',
-            }}
-            anchorEl={anchorEl}
-            open={open}
-            onClose={handleClose}
-            PaperProps={{
-              style: {
-                marginTop: '.5rem',
-                maxHeight: 48 * 4.5,
-                width: 'fit-content',
-              },
-            }}
-          >
-            {Object.keys(links).map((link) => {
-              return (
-                <Link key={link} href={'/' + links[link]}>
-                  <MenuItem
-                    selected={'/' + links[link] === pathname}
-                    onClick={handleClose}
-                  >
-                    {link}
-                  </MenuItem>
-                </Link>
-              );
-            })}
-          </Menu>
+        <SearchBar />
+        <div className='hidden lg:flex space-x-2 lg:space-x-4'>
+          {Object.keys(links).map((link) => (
+            <NavLink key={link} title={link} path={links[link]} />
+          ))}
         </div>
-        {session.status === 'authenticated' ? (
-          <AccountButton />
-        ) : (
-          // <div onClick={() => signOut()}>
-          //   <Avatar>
-          //     <img src={session.data?.user?.image!} alt='' />
-          //   </Avatar>
-          // </div>
-          <div className='flex gap-2'>
-            <Button rounded light auto onClick={() => router.push('/login')}>
-              Login
-            </Button>
-            <Button
-              rounded
-              auto
-              onClick={() => router.push('/login?signup=true')}
+        <div className='flex space-x-4 items-center'>
+          <div className='lg:hidden'>
+            <IconButton
+              aria-label='more'
+              id='long-button'
+              aria-controls={open ? 'long-menu' : undefined}
+              aria-expanded={open ? 'true' : undefined}
+              aria-haspopup='true'
+              onClick={handleClick}
+              className='text-white p-0'
             >
-              Sign Up
-            </Button>
+              <MenuIcon
+                id='menuicon'
+                className='text-4xl text-[rgb(9,87,243)]'
+              />
+            </IconButton>
+            <Menu
+              id='long-menu'
+              MenuListProps={{
+                'aria-labelledby': 'long-button',
+              }}
+              anchorEl={anchorEl}
+              open={open}
+              onClose={handleClose}
+              PaperProps={{
+                style: {
+                  marginTop: '.5rem',
+                  maxHeight: 48 * 4.5,
+                  width: 'fit-content',
+                },
+              }}
+            >
+              {Object.keys(links).map((link) => {
+                return (
+                  <Link key={link} href={'/' + links[link]}>
+                    <MenuItem
+                      selected={'/' + links[link] === pathname}
+                      onClick={handleClose}
+                    >
+                      {link}
+                    </MenuItem>
+                  </Link>
+                );
+              })}
+            </Menu>
           </div>
-        )}
+          {session.status === 'authenticated' ? (
+            <AccountButton />
+          ) : (
+            // <div onClick={() => signOut()}>
+            //   <Avatar>
+            //     <img src={session.data?.user?.image!} alt='' />
+            //   </Avatar>
+            // </div>
+            <div className='flex gap-2'>
+              <Button rounded light auto onClick={() => router.push('/login')}>
+                Login
+              </Button>
+              <Button
+                rounded
+                auto
+                onClick={() => router.push('/login?signup=true')}
+              >
+                Sign Up
+              </Button>
+            </div>
+          )}
+        </div>
       </div>
-    </div>
-  );
+    );
+  else {
+    return <div>Loading...</div>;
+  }
 };
 
 export default Navbar;

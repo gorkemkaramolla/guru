@@ -6,6 +6,7 @@ import { SessionProvider } from 'next-auth/react';
 // import useSWR from 'swr';
 
 import { Toaster } from 'react-hot-toast';
+import Layout from '@/components/Layout/Layout';
 // import { UserContext } from '@/context/UserContext';
 
 export default function App({
@@ -25,7 +26,9 @@ export default function App({
     <SessionProvider session={session}>
       {/* <UserContext.Provider value={users}> */}
       <Toaster />
-      <Component {...pageProps} />
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
       {/* </UserContext.Provider> */}
     </SessionProvider>
   );
