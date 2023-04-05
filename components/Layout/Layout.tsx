@@ -1,16 +1,18 @@
 import React, { ReactElement } from 'react';
 import Navbar from '../Navbar';
 import { FC } from 'react';
+import HeadComponent from './HeadComponent';
 type Props = {
   children: ReactElement;
 };
 
 const Layout: FC<Props> = ({ children }) => {
   return (
-    <div>
+    <>
+      <HeadComponent />
       <Navbar />
       <main>{children}</main>
-    </div>
+    </>
   );
 };
 
