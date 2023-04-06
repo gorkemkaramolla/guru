@@ -44,7 +44,7 @@ const Navbar = () => {
   }, [router.pathname]);
   if (isBrowser)
     return (
-      <div className='fixed top-0 flex py-2  px-4 space-x-4 justify-around items-center border shadow-sm w-full z-50'>
+      <div className='bg-white fixed top-0 left-0 right-0 flex py-2 z-10 justify-around items-center border shadow-sm w-full '>
         <Link href='/'>
           <img className='h-10 hidden md:block' src='logo2.png' alt='logo' />
           <img className='h-10 md:hidden' src='logo1.png' alt='logo' />
