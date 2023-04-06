@@ -2,10 +2,11 @@ import Head from 'next/head';
 // import Image from 'next/image';
 // import { Inter } from 'next/font/google';
 import Navbar from '../components/Navbar';
-
 import React from 'react';
 
 import _ from 'lodash';
+import ToggleButton from '@/components/UI/ToggleButton';
+import { ThemeProvider } from '@/context/ThemeContext';
 // const inter = Inter({ subsets: ['latin'] });
 
 export default function Home() {
@@ -34,12 +35,15 @@ export default function Home() {
         />
         <link rel='manifest' href='/site.webmanifest' />
       </Head>
-      <div className='container mx-auto '>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam
-        explicabo consequuntur corrupti temporibus culpa quos voluptates fugiat
-        harum, eveniet, quaerat eos atque iste aliquam, ratione obcaecati
-        laudantium dicta minus hic!
-      </div>
+      <ThemeProvider>
+        <div className='container mx-auto  '>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam
+          explicabo consequuntur corrupti temporibus culpa quos voluptates
+          fugiat harum, eveniet, quaerat eos atque iste aliquam, ratione
+          obcaecati laudantium dicta minus hic!
+          <ToggleButton />
+        </div>
+      </ThemeProvider>
     </>
   );
 }

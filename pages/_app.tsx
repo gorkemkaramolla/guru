@@ -8,6 +8,7 @@ import { SessionProvider } from 'next-auth/react';
 import { Toaster } from 'react-hot-toast';
 import Layout from '@/components/Layout/Layout';
 // import { UserContext } from '@/context/UserContext';
+import { ThemeProvider } from '@/context/ThemeContext';
 
 export default function App({
   Component,
@@ -27,7 +28,9 @@ export default function App({
       {/* <UserContext.Provider value={users}> */}
       <Toaster />
       <Layout>
-        <Component {...pageProps} />
+        <ThemeProvider>
+          <Component {...pageProps} />
+        </ThemeProvider>
       </Layout>
       {/* </UserContext.Provider> */}
     </SessionProvider>
