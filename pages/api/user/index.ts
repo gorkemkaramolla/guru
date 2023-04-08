@@ -1,5 +1,4 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import connectDB from '../../../middleware/mongodb';
 import User from '../../../model/user.model';
 import { ObjectId } from 'mongodb';
 
@@ -18,4 +17,4 @@ async function handler(req: NextApiRequest, res: NextApiResponse<any>) {
   } else if (req.method === 'PUT') {
   } else res.status(200).json({ name: 'John Doe' });
 }
-export default connectDB(handler);
+export default handler;
