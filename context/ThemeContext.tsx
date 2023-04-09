@@ -1,3 +1,4 @@
+import { localStorageSetTheme } from '@/util/theme';
 import { ReactElement, createContext, useContext, useEffect } from 'react';
 import { useState } from 'react';
 interface ThemeContextType {
@@ -10,12 +11,15 @@ export const ThemeContext = createContext<ThemeContextType>({
 });
 
 export const ThemeProvider = ({ children }: { children: ReactElement }) => {
-  const [mode, setMode] = useState<string>('');
-  useEffect(() => {
-    if (mode === 'dark') document.documentElement.classList.add(mode);
-    else document.documentElement.classList.remove('dark');
-  }, [mode]);
+  const [mode, setMode] = useState<string>(
+    typeof window !== 'undefined'
+      ? localStorage.getItem('lightTheme') ?? ''
+      : ''
+  );
 
+  useEffect(() => {
+    localStorageSetTheme(mode);
+  }, [mode]);
   return (
     <ThemeContext.Provider value={{ mode, setMode }}>
       {children}
