@@ -13,7 +13,6 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { registerUser } from '@/services/user.service';
 import { getSession, signIn } from 'next-auth/react';
-import axios from 'axios';
 import { AxiosError } from 'axios';
 
 import CustomButton from '@/components/CustomButton';

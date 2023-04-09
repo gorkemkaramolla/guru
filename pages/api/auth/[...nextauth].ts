@@ -1,24 +1,19 @@
-// import { Role } from '@/nextauth';
+import GoogleProvider from 'next-auth/providers/google';
+import { PrismaAdapter } from '@next-auth/prisma-adapter';
+import { PrismaClient } from '@prisma/client';
 import NextAuth, { Account, Profile, User } from 'next-auth';
 import { Adapter, AdapterUser } from 'next-auth/adapters';
 
 import { JWT } from 'next-auth/jwt';
-import GoogleProvider from 'next-auth/providers/google';
-// import UserModel from '@/model/user.model';
-// import { ObjectId } from 'mongodb';
-// import { NextApiRequest, NextApiResponse } from 'next';
-// import { MongoDBAdapter } from '@next-auth/mongodb-adapter';
+const prisma = new PrismaClient();
 
-export const authOptions = {
-  // Configure one or more authentication providers
-  //   adapter: MongoDBAdapter(clientPromise),
+export default NextAuth({
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
   ],
-
   callbacks: {
     async jwt({
       token,
@@ -38,9 +33,23 @@ export const authOptions = {
         //     user.role = 'admin' as Role;
         //   token.role = user.role;
         // }
-
+        let user2 = await prisma.user.findUnique({
+          where: { email: user?.email! },
+        });
+        if (!user2) {
+          user2 = await prisma.user.create({
+            data: {
+              email: user?.email!,
+              name: user?.name?.split(' ')?.at(0)!,
+              lastname: user?.name?.split(' ')?.at(1)!,
+              profilePic: user?.image!,
+            },
+          });
+        }
+        token.userId = user?.id;
         token.accessToken = account.access_token;
       }
+
       return token;
     },
     async redirect({ url, baseUrl }: { url: any; baseUrl: any }) {
@@ -65,8 +74,5 @@ export const authOptions = {
       return session;
     },
   },
-
   secret: process.env.NEXTAUTH_SECRET,
-};
-
-export default NextAuth(authOptions);
+});

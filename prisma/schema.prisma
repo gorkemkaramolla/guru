@@ -15,6 +15,7 @@ model User {
   password      String        @default("") @db.VarChar(32)
   register_date DateTime      @default(now())
   role          Role          @default(USER)
+  profilePic    String        @db.VarChar(150)
   posts         Post[]
   comments      Comment[]
   post_likes    PostLike[]
