@@ -13,6 +13,7 @@ export default function Home() {
   return (
     <>
       <Head>
+        {/* Redeploy */}
         <title>Alpha Guru</title>
         <meta name='description' content='Guru for all level learners' />
         <meta name='viewport' content='width=device-width, initial-scale=1' />
