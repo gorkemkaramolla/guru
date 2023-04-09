@@ -1,6 +1,4 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import User from '../../../model/user.model';
-import { ObjectId } from 'mongodb';
 
 async function handler(req: NextApiRequest, res: NextApiResponse<any>) {
   if (req.method === 'GET') {
