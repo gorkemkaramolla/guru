@@ -12,7 +12,7 @@ model User {
   name          String        @db.VarChar(32)
   lastname      String        @db.VarChar(32)
   email         String        @unique @db.VarChar(255)
-  password      String        @default("") @db.VarChar(32)
+  password      String        @default("") @db.VarChar(255)
   register_date DateTime      @default(now())
   role          Role          @default(USER)
   profilePic    String        @db.VarChar(150)

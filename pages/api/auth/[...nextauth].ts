@@ -30,16 +30,19 @@ export default NextAuth({
         if (!result) {
           throw new Error('No user Found with Email Please Sign Up...!');
         }
-        const checkPassword = _.isEqual(
-          credentials?.password!,
-          result?.password!
-        );
-        // compare()
-        // const checkPassword = await compare(
+        // const checkPassword = _.isEqual(
         //   credentials?.password!,
         //   result?.password!
         // );
+
+        const checkPassword = await compare(
+          credentials?.password!,
+          result?.password!
+        );
         console.log(checkPassword);
+        console.log('credentials?.password:', credentials?.password);
+        console.log('result?.password:', result?.password);
+
         // incorrect password
         if (!checkPassword || result?.email !== credentials?.email!) {
           throw new Error("Username or Password doesn't match");

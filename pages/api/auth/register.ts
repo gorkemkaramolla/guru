@@ -22,14 +22,14 @@ export default async function handler(
       return res.status(422).json({ message: 'User Already Exists...!' });
 
     // hash password and add to db
+
     await prisma.user
       .create({
         data: {
           name: name,
           lastname: lastname,
           email: email,
-          password: password,
-          // password: await hash(password, 10),
+          password: await hash(password.trim(), 10),
           role: role,
           profilePic: '',
         },
