@@ -1,47 +1,59 @@
 import React from 'react';
-import {
-  Avatar,
-  Button,
-  Container,
-  CssBaseline,
-  TextField,
-  Typography,
-} from '@mui/material';
+import { Avatar, Container } from '@mui/material';
 import Link from 'next/link';
-import { getSession, signIn } from 'next-auth/react';
-import GoogleIcon from '@mui/icons-material/Google';
+import { signIn } from 'next-auth/react';
+import { FcGoogle } from 'react-icons/fc';
 
-import CustomButton from '../CustomButton';
-import { useState } from 'react';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import axios from 'axios';
-import { useRouter } from 'next/router';
 
+import { useRouter } from 'next/router';
+import { Button, Input, Text } from '@nextui-org/react';
+import { useFormik } from 'formik';
 interface Props {
   // define the component props here
 }
-
+const userInitialValues = {
+  email: '',
+  password: '',
+};
 const LoginPage: React.FC<Props> = ({}) => {
   const router = useRouter();
-  const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    // Handle form submission here
-    await axios
-      .post('/api/user/login', { email, password })
-      .then((res) => res.status === 200 && router.push('/'))
-      .catch((e) => router.push('/login?invalid=true'));
-  };
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const signin = async (email: string, password: string) => {
+    const status = await signIn('credentials', {
+      redirect: false,
+      email: email,
+      password: password,
+      callbackUrl: '/',
+    });
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    // Handle form submission here
+    if (status?.ok) router.push(status?.url!);
   };
+  const formik = useFormik({
+    initialValues: userInitialValues,
+    validate(values) {
+      const errors: {
+        email?: string;
+        password?: string;
+      } = {};
 
+      if (!values.email) {
+        errors.email = 'Required';
+      } else if (
+        !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)
+      ) {
+        errors.email = 'Invalid email address';
+      }
+      if (!values.password) {
+        errors.password = 'Required';
+      }
+      return errors;
+    },
+    onSubmit: (values) => {
+      signin(values.email, values.password);
+    },
+  });
   return (
     <Container component='main' maxWidth='xs' className='h-screen'>
-      <CssBaseline />
       <div
         style={{
           display: 'flex',
@@ -58,53 +70,52 @@ const LoginPage: React.FC<Props> = ({}) => {
         >
           <LockOutlinedIcon />
         </Avatar>
-        <Typography component='h1' variant='h5'>
-          Log in
-        </Typography>
+        <Text>Log in</Text>
         <form
-          onSubmit={handleLogin}
+          onSubmit={formik.handleSubmit}
           style={{
             width: '100%',
             marginTop: '24px',
           }}
         >
-          <TextField
-            variant='outlined'
-            margin='normal'
-            required
-            fullWidth
-            id='email'
-            label='Email Address'
-            name='email'
-            autoComplete='email'
-            autoFocus
-            value={email}
-            onChange={(event) => setEmail(event.target.value)}
-          />
-          <TextField
-            variant='outlined'
-            margin='normal'
-            required
-            fullWidth
-            name='password'
-            label='Password'
-            type='password'
-            id='password'
-            autoComplete='current-password'
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
-          />
-          <CustomButton
+          <div className='mb-8'>
+            <Input
+              fullWidth
+              type='email'
+              autoComplete='email'
+              labelPlaceholder='Email'
+              bordered
+              {...formik.getFieldProps('email')}
+            />
+            {formik.touched.email && formik.errors.email ? (
+              <div className='mx-2 text-rose-500'>{formik.errors.email}</div>
+            ) : null}
+          </div>
+          <div>
+            <Input.Password
+              fullWidth
+              type='password'
+              labelPlaceholder='Password'
+              bordered
+              {...formik.getFieldProps('password')}
+            />
+            {formik.touched.password && formik.errors.password ? (
+              <div className='mx-2 text-rose-500'>{formik.errors.password}</div>
+            ) : null}
+          </div>
+
+          <Button
             type='submit'
-            fullWidth
-            variant='contained'
-            color='primary'
+            css={{
+              background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
+              w: '100%',
+            }}
             style={{
               margin: '24px 0px 16px',
             }}
           >
             Log In
-          </CustomButton>
+          </Button>
         </form>
       </div>
       <div className='text-right'>
@@ -115,12 +126,12 @@ const LoginPage: React.FC<Props> = ({}) => {
       </div>
       <hr className='w-4/5 mx-auto my-4 border-black' />
       <Button
-        fullWidth
-        sx={{ textTransform: 'none', py: 1.5 }}
-        variant='contained'
-        onClick={() => signIn()}
+        bordered
+        css={{ w: '100%' }}
+        onClick={() => signIn('google')}
+        icon={<FcGoogle />}
       >
-        <GoogleIcon sx={{ pr: '0.4rem' }} /> Sign in with Google
+        Sign in with Google
       </Button>
     </Container>
   );

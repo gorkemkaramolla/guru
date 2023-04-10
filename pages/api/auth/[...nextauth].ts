@@ -1,10 +1,14 @@
 import GoogleProvider from 'next-auth/providers/google';
-import { PrismaAdapter } from '@next-auth/prisma-adapter';
+import CredentialsProvider from 'next-auth/providers/credentials';
 import { PrismaClient } from '@prisma/client';
-import NextAuth, { Account, Profile, User } from 'next-auth';
-import { Adapter, AdapterUser } from 'next-auth/adapters';
+import NextAuth, { Account, Profile, SessionStrategy, User } from 'next-auth';
+import { AdapterUser } from 'next-auth/adapters';
 
 import { JWT } from 'next-auth/jwt';
+import { Role } from '@/nextauth';
+import { compare } from 'bcryptjs';
+import { sign } from 'jsonwebtoken';
+import _ from 'lodash';
 const prisma = new PrismaClient();
 
 export default NextAuth({
@@ -12,6 +16,42 @@ export default NextAuth({
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+    }),
+    CredentialsProvider({
+      name: 'Credentials',
+      async authorize(credentials, req) {
+        prisma.$connect();
+        // check user existance
+        console.log(credentials);
+        const result = await prisma.user.findFirst({
+          where: { email: credentials?.email! },
+        });
+        console.log(result);
+        if (!result) {
+          throw new Error('No user Found with Email Please Sign Up...!');
+        }
+        const checkPassword = _.isEqual(
+          credentials?.password!,
+          result?.password!
+        );
+        // compare()
+        // const checkPassword = await compare(
+        //   credentials?.password!,
+        //   result?.password!
+        // );
+        console.log(checkPassword);
+        // incorrect password
+        if (!checkPassword || result?.email !== credentials?.email!) {
+          throw new Error("Username or Password doesn't match");
+        }
+        prisma.$disconnect();
+        return {
+          id: String(result.id),
+          email: result.email,
+          name: result.name + ' ' + result.lastname,
+        };
+      },
+      credentials: { email: { type: 'text' }, password: { type: 'text' } },
     }),
   ],
   callbacks: {
@@ -28,16 +68,16 @@ export default NextAuth({
     }) {
       // Persist the OAuth access_token to the token right after signin
       if (account) {
-        // if (user) {
-        //   if (process.env.ADMINS?.split(',').includes(user?.email!))
-        //     user.role = 'admin' as Role;
-        //   token.role = user.role;
-        // }
-        let user2 = await prisma.user.findUnique({
+        if (user) {
+          if (process.env.ADMINS?.split(',').includes(user?.email!))
+            user.role = 'admin' as Role;
+          token.role = user.role;
+        }
+        let newUser = await prisma.user.findUnique({
           where: { email: user?.email! },
         });
-        if (!user2) {
-          user2 = await prisma.user.create({
+        if (!newUser) {
+          newUser = await prisma.user.create({
             data: {
               email: user?.email!,
               name: user?.name?.split(' ')?.at(0)!,
@@ -48,6 +88,13 @@ export default NextAuth({
         }
         token.userId = user?.id;
         token.accessToken = account.access_token;
+      } else {
+        const payload = {
+          ...user,
+          iat: Math.floor(Date.now() / 1000), // issued at time in seconds
+          exp: Math.floor(Date.now() / 1000) + 60 * 60 * 12, // expiration time in seconds, e.g. 12 hour from now
+        };
+        token.accessToken = sign(payload, process.env.JWT_SECRET!);
       }
 
       return token;
@@ -58,21 +105,19 @@ export default NextAuth({
     async session({ session, token }: { session: any; token: any }) {
       // Send properties to the client, like an access_token from a provider.
       if (token && session.user) {
-        // session.user.role = token.role;
-
-        // const newUser = await new userModel({
-        //   _id: new ObjectId(),
-        //   email: session.user?.email,
-        //   name: session.user?.name,
-        //   image: session.user?.image,
-        // });
-        // await newUser.save();
-        // console.log('user: ' + user);
-
+        session.user.role = token.role;
         session.accessToken = token.accessToken;
       }
       return session;
     },
   },
+  // session: {
+  //   strategy: 'jwt' as SessionStrategy,
+  //   maxAge: 60, // 60 secs
+  // },
+  // jwt: {
+  //   secret: process.env.NEXTAUTH_SECRET,
+  //   maxAge: 60, // 60 secs
+  // },
   secret: process.env.NEXTAUTH_SECRET,
 });
