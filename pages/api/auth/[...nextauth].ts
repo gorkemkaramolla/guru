@@ -19,6 +19,7 @@ export default NextAuth({
     }),
     CredentialsProvider({
       name: 'Credentials',
+
       async authorize(credentials, req) {
         prisma.$connect();
         // check user existance
@@ -30,33 +31,29 @@ export default NextAuth({
         if (!result) {
           throw new Error('No user Found with Email Please Sign Up...!');
         }
-        // const checkPassword = _.isEqual(
-        //   credentials?.password!,
-        //   result?.password!
-        // );
 
         const checkPassword = await compare(
           credentials?.password!,
           result?.password!
         );
-        console.log(checkPassword);
-        console.log('credentials?.password:', credentials?.password);
-        console.log('result?.password:', result?.password);
 
         // incorrect password
         if (!checkPassword || result?.email !== credentials?.email!) {
           throw new Error("Username or Password doesn't match");
         }
         prisma.$disconnect();
-        return {
-          id: String(result.id),
-          email: result.email,
-          name: result.name + ' ' + result.lastname,
-        };
+        if (checkPassword) {
+          return {
+            id: String(result.id),
+            email: result.email,
+            name: result.name + ' ' + result.lastname,
+          };
+        } else return null;
       },
       credentials: { email: { type: 'text' }, password: { type: 'text' } },
     }),
   ],
+
   callbacks: {
     async jwt({
       token,
@@ -114,13 +111,13 @@ export default NextAuth({
       return session;
     },
   },
-  // session: {
-  //   strategy: 'jwt' as SessionStrategy,
-  //   maxAge: 60, // 60 secs
-  // },
-  // jwt: {
-  //   secret: process.env.NEXTAUTH_SECRET,
-  //   maxAge: 60, // 60 secs
-  // },
-  secret: process.env.NEXTAUTH_SECRET,
+  session: {
+    strategy: 'jwt' as SessionStrategy,
+    maxAge: 36000,
+  },
+  jwt: {
+    secret: process.env.NEXTAUTH_SECRET!,
+    maxAge: 36000, // 60 secs
+  },
+  secret: process.env.NEXTAUTH_SECRET!,
 });
