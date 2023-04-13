@@ -83,6 +83,7 @@ export default NextAuth({
               name: user?.name?.split(' ')?.at(0)!,
               lastname: user?.name?.split(' ')?.at(1)!,
               profilePic: user?.image!,
+              at: user?.name!,
             },
           });
         }
@@ -107,6 +108,7 @@ export default NextAuth({
       if (token && session.user) {
         session.user.role = token.role;
         session.accessToken = token.accessToken;
+        session.at = token.at;
       }
       return session;
     },

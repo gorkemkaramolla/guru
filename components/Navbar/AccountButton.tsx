@@ -4,7 +4,7 @@ import { signOut, useSession } from 'next-auth/react';
 export default function App() {
   const session = useSession();
   return (
-    <Dropdown placement='bottom-left'>
+    <Dropdown placement='bottom-right'>
       <Dropdown.Trigger>
         <div>
           <div className='md:hidden'>
@@ -34,11 +34,12 @@ export default function App() {
           </div>
         </div>
       </Dropdown.Trigger>
-      <Dropdown.Menu color='secondary' aria-label='Avatar Actions'>
+      <Dropdown.Menu
+        css={{ $$dropdownMenuWidth: '390px' }}
+        color='secondary'
+        aria-label='Avatar Actions'
+      >
         <Dropdown.Item key='profile' css={{ height: '$18' }}>
-          <Text b color='inherit' css={{ d: 'flex' }}>
-            Signed in as
-          </Text>
           <Text b color='inherit' css={{ d: 'flex' }}>
             {session.data?.user?.email!}
           </Text>
@@ -46,12 +47,7 @@ export default function App() {
         <Dropdown.Item key='settings' withDivider>
           My Settings
         </Dropdown.Item>
-        <Dropdown.Item key='team_settings'>Team Settings</Dropdown.Item>
-        <Dropdown.Item key='analytics' withDivider>
-          Analytics
-        </Dropdown.Item>
-        <Dropdown.Item key='system'>System</Dropdown.Item>
-        <Dropdown.Item key='configurations'>Configurations</Dropdown.Item>
+
         <Dropdown.Item key='help_and_feedback' withDivider>
           Help & Feedback
         </Dropdown.Item>

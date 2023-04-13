@@ -32,6 +32,7 @@ export default async function handler(
           password: await hash(password.trim(), 10),
           role: role,
           profilePic: '',
+          at: name + lastname,
         },
       })
       .then((value) => res.status(201).json({ status: true, user: value }))
