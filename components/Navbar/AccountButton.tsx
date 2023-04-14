@@ -1,8 +1,10 @@
 import { Dropdown, Avatar, Text, User } from '@nextui-org/react';
 import { signOut, useSession } from 'next-auth/react';
-
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 export default function App() {
   const session = useSession();
+  const router = useRouter();
   return (
     <Dropdown placement='bottom-right'>
       <Dropdown.Trigger>
@@ -25,9 +27,10 @@ export default function App() {
               name={session.data?.user?.name}
               description={
                 '@' +
-                session.data?.user?.name
-                  ?.replaceAll(' ', '')
-                  .toLocaleLowerCase()
+                // session.data?.user?.name
+                //   ?.replaceAll(' ', '')
+                //   .toLocaleLowerCase()
+                session.data?.user?.at
               }
               src={session.data?.user?.image!}
             />
@@ -40,12 +43,25 @@ export default function App() {
         aria-label='Avatar Actions'
       >
         <Dropdown.Item key='profile' css={{ height: '$18' }}>
-          <Text b color='inherit' css={{ d: 'flex' }}>
-            {session.data?.user?.email!}
+          <Text
+            onClick={() => {
+              router.push(session.data?.user?.at!);
+            }}
+            b
+            color='inherit'
+            css={{ d: 'flex' }}
+          >
+            User :{session.data?.user?.at!}
           </Text>
         </Dropdown.Item>
         <Dropdown.Item key='settings' withDivider>
-          My Settings
+          <Text
+            onClick={() => {
+              router.push('settings');
+            }}
+          >
+            My Settings
+          </Text>
         </Dropdown.Item>
 
         <Dropdown.Item key='help_and_feedback' withDivider>

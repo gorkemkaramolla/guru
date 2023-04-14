@@ -33,12 +33,14 @@
     "react-hot-toast": "^2.4.0",
     "react-icons": "^4.8.0",
     "swr": "^2.1.1",
-    "typescript": "5.0.2"
+    "typescript": "5.0.2",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",
     "@types/jsonwebtoken": "^9.0.1",
     "@types/lodash": "^4.14.191",
+    "@types/uuid": "^9.0.1",
     "autoprefixer": "^10.4.14",
     "postcss": "^8.4.21",
     "prisma": "^4.12.0",

@@ -3,12 +3,13 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import { PrismaClient } from '@prisma/client';
 import NextAuth, { Account, Profile, SessionStrategy, User } from 'next-auth';
 import { AdapterUser } from 'next-auth/adapters';
-
 import { JWT } from 'next-auth/jwt';
 import { Role } from '@/nextauth';
 import { compare } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
 import _ from 'lodash';
+import { v4 as uuidv4 } from 'uuid';
+
 const prisma = new PrismaClient();
 
 export default NextAuth({
@@ -71,7 +72,6 @@ export default NextAuth({
         if (user) {
           if (process.env.ADMINS?.split(',').includes(user?.email!))
             user.role = 'admin' as Role;
-          token.role = user.role;
         }
         let newUser = await prisma.user.findUnique({
           where: { email: user?.email! },
@@ -83,9 +83,13 @@ export default NextAuth({
               name: user?.name?.split(' ')?.at(0)!,
               lastname: user?.name?.split(' ')?.at(1)!,
               profilePic: user?.image!,
-              at: user?.name!,
+              at: uuidv4(),
             },
           });
+        }
+        if (user) {
+          user.at = newUser?.at;
+          token.at = user.at;
         }
         token.userId = user?.id;
         token.accessToken = account.access_token;
@@ -108,7 +112,7 @@ export default NextAuth({
       if (token && session.user) {
         session.user.role = token.role;
         session.accessToken = token.accessToken;
-        session.at = token.at;
+        session.user.at = token.at;
       }
       return session;
     },

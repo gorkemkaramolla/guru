@@ -15,7 +15,7 @@ export default function Document() {
   return (
     <Html lang='en'>
       <Head />
-      <body className={mode}>
+      <body className={mode + ' dark:bg-[rgba(2,4,9)]'}>
         <Main />
         <NextScript />
       </body>
