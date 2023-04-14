@@ -51,7 +51,7 @@ const Profile: React.FC<Props> = () => {
   } else
     return (
       <div className=' dark:bg-dark dark:text-gray-200 text-gray-800  bg-whitebg text-xl mx-auto  container shadow-2xl rounded-xl justify-center items-center flex     flex-col'>
-        <div className='    flex-col flex justify-center items-center p-12'>
+        <div className='flex-col flex justify-center items-center p-12'>
           <Avatar
             css={{ size: '$25' }}
             rounded
