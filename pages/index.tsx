@@ -36,15 +36,12 @@ export default function Home() {
         />
         <link rel='manifest' href='/site.webmanifest' />
       </Head>
-      <ThemeProvider>
-        <div className='container mx-auto  '>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam
-          explicabo consequuntur corrupti temporibus culpa quos voluptates
-          fugiat harum, eveniet, quaerat eos atque iste aliquam, ratione
-          obcaecati laudantium dicta minus hic!
-          <ToggleButton />
-        </div>
-      </ThemeProvider>
+      <div className='container mx-auto  '>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam
+        explicabo consequuntur corrupti temporibus culpa quos voluptates fugiat
+        harum, eveniet, quaerat eos atque iste aliquam, ratione obcaecati
+        laudantium dicta minus hic!
+      </div>
     </>
   );
 }

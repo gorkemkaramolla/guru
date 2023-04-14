@@ -9,8 +9,6 @@ const settings: React.FC<Props> = () => {
       <div className='col-span-6 sm:col-span-0'></div>
       <div className='md:col-span-6 col-span-12  '>
         <SettingsElement />
-        <SettingsElement />
-        <SettingsElement />
       </div>
     </div>
   );

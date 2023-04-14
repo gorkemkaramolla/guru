@@ -13,8 +13,9 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        secondary: '#f5f5f5',
+        dark: 'rgb(34,38,44)',
         white: '#ffffff',
+        whitebg: 'rgb(245,245,245)',
 
         transparent: 'transparent',
         current: 'currentColor',

@@ -3,6 +3,8 @@ import Navbar from '../Navbar';
 import { FC } from 'react';
 import HeadComponent from './HeadComponent';
 import styles from '../../styles/Home.module.css';
+import ToggleButton from '../UI/ToggleButton';
+import { ThemeProvider } from '@/context/ThemeContext';
 type Props = {
   children: ReactElement;
 };
@@ -12,7 +14,13 @@ const Layout: FC<Props> = ({ children }) => {
     <>
       <HeadComponent />
       <Navbar />
-      <main className={styles.main}>{children}</main>
+      <ThemeProvider>
+        <div>
+          <main className={styles.main}>{children}</main>
+
+          <ToggleButton />
+        </div>
+      </ThemeProvider>
     </>
   );
 };
