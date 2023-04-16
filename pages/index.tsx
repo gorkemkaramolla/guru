@@ -2,14 +2,34 @@ import Head from 'next/head';
 // import Image from 'next/image';
 // import { Inter } from 'next/font/google';
 import Navbar from '../components/Navbar';
-import React from 'react';
-
+import React, { useEffect, useState } from 'react';
+import type { Post } from '@prisma/client';
+import PostClient from '@/components/Post/PostClient';
 import _ from 'lodash';
 import ToggleButton from '@/components/UI/ToggleButton';
 import { ThemeProvider } from '@/context/ThemeContext';
+import { getPosts } from '@/services/post.service';
+
 // const inter = Inter({ subsets: ['latin'] });
 
 export default function Home() {
+  const [posts, setPosts] = useState<Post[]>();
+  const [loading, setLoading] = useState<boolean>(false);
+  useEffect(() => {
+    setLoading(true);
+    getPosts()
+      .then((posts) => {
+        setPosts(posts);
+        setLoading(false);
+      })
+      .catch(() => {
+        setLoading(false);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+    setLoading(false);
+  }, []);
   return (
     <>
       <Head>
@@ -36,12 +56,6 @@ export default function Home() {
         />
         <link rel='manifest' href='/site.webmanifest' />
       </Head>
-      <div className='container mx-auto  '>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam
-        explicabo consequuntur corrupti temporibus culpa quos voluptates fugiat
-        harum, eveniet, quaerat eos atque iste aliquam, ratione obcaecati
-        laudantium dicta minus hic!
-      </div>
     </>
   );
 }

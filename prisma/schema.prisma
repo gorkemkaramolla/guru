@@ -50,7 +50,7 @@ model Post {
   category_id Int
   category    Category   @relation(fields: [category_id], references: [id])
   title       String
-  content     String
+  content     String     @db.VarChar(65000)
   created_at  DateTime   @default(now())
   updated_at  DateTime   @updatedAt
   user_id     Int

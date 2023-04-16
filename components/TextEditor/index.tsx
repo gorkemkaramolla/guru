@@ -3,7 +3,7 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 const Quill = ReactQuill.Quill;
 var Font = Quill.import('formats/font');
-Font.whitelist = ['Roboto', 'Raleway', 'Montserrat', 'Lato', 'Rubik'];
+Font.whitelist = ['Sans-serif', 'Mono-space', 'Montserrat', 'Lato', 'Rubik'];
 Quill.register(Font, true);
 interface Props {
   value: string;
@@ -13,6 +13,7 @@ export default function TextEditor({ value, onChange }: Props) {
   return (
     <div>
       <ReactQuill
+        style={{ minWidth: '350px', maxWidth: '700px' }}
         value={value}
         onChange={onChange}
         modules={{
@@ -33,6 +34,8 @@ export default function TextEditor({ value, onChange }: Props) {
           ],
         }}
         formats={[
+          'font',
+          'color',
           'header',
           'font',
           'bold',
