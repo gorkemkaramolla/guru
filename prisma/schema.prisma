@@ -47,6 +47,7 @@ model CategoryModerator {
 
 model Post {
   id          Int        @id @default(autoincrement())
+  at          String
   category_id Int
   category    Category   @relation(fields: [category_id], references: [id])
   title       String

@@ -1,12 +1,23 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '@/lib/prisma';
+import slugify from 'slugify';
+
+import { v4 as uuidv4 } from 'uuid';
+
+function generateSlug(title: string): string {
+  const slug = slugify(title, {
+    lower: true,
+    strict: true,
+  });
+  const uniqueId = uuidv4().substring(0, 8); // generate a unique identifier and take the first 8 characters
+  return `${uniqueId}-${slug}`;
+}
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<any>
 ) {
   const { content, title, user_id, category_id } = req.body;
-  console.log(req.body);
 
   if (req.method === 'GET') {
     prisma.$connect();
@@ -19,20 +30,25 @@ export default async function handler(
     }
   } else if (req.method === 'POST') {
     prisma.$connect();
+    const slugAt = generateSlug(title);
+    console.log(slugAt);
+    console.log(user_id);
+    console.log(category_id);
+
     try {
-      await prisma.post
-        .create({
-          data: {
-            content: content,
-            user_id,
-            title,
-            category_id,
-          },
-        })
-        .then();
+      await prisma.post.create({
+        data: {
+          content: content,
+          user_id: Number(user_id),
+          title,
+          category_id: Number(category_id),
+          at: slugAt,
+        },
+      });
       res.status(200).json('New Post Successfully Created');
     } catch (e) {
-      res.status(400).json('Creating post unsusccessful');
+      console.log(e);
+      res.status(400).json('Creating post unsuccessful');
     } finally {
       prisma.$disconnect();
     }
@@ -41,5 +57,4 @@ export default async function handler(
   } else {
     res.status(200).json({ name: 'John Doe' });
   }
-  prisma.$disconnect();
 }

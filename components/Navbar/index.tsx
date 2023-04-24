@@ -8,11 +8,13 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useSession, signOut } from 'next-auth/react';
 import AccountButton from './AccountButton';
+import Image from 'next/image';
 import SearchBar from './SearchBar';
 const links: { [key: string]: string } = {
   Discover: 'discover',
   Communities: 'community',
   'How Guru Works': 'about',
+  'Create Post ': 'create-post',
 };
 
 const Navbar = () => {
@@ -46,8 +48,20 @@ const Navbar = () => {
     return (
       <div className=' bg-white dark:bg-black fixed top-0 left-0 right-0 flex py-2 z-[100] justify-around items-center border shadow-sm w-full '>
         <Link href='/'>
-          <img className='h-10 hidden md:block' src='logo2.png' alt='logo' />
-          <img className='h-10 md:hidden' src='logo1.png' alt='logo' />
+          <Image
+            width={140}
+            height={54}
+            className='h-10 hidden md:block'
+            src='/logo2.png'
+            alt='logo'
+          />
+          <Image
+            width={54}
+            height={54}
+            className='h-10 md:hidden'
+            src='/logo1.png'
+            alt='logo'
+          />{' '}
         </Link>
 
         {/* <div className='relative rounded-md shadow-sm '>

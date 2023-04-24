@@ -21,7 +21,12 @@ export default function CreatePostPage() {
 
   function handleSubmit(event: any) {
     event.preventDefault();
-    createPost(content, 'baslik', 4, 1)
+    createPost(
+      content,
+      '"This is an EXAMPLE of a string with $pecial characters"    ',
+      1,
+      1
+    )
       .then((res) => {
         console.log(res);
       })

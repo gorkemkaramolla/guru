@@ -9,30 +9,23 @@ import { Toaster } from 'react-hot-toast';
 import Layout from '@/components/Layout/Layout';
 // import { UserContext } from '@/context/UserContext';
 import { ThemeProvider } from '@/context/ThemeContext';
-
+import { ApolloProvider } from '@apollo/client';
+import { getClient } from '@/lib/client';
 export default function App({
   Component,
   pageProps: { session, ...pageProps },
 }: AppProps) {
-  //   const fetcher = async (url: string) =>
-  //   await axios.get(url).then((res) => {
-  //     return res.data;
-  //   });
-  // const { data: clinics } = useSWR<IClinic[]>('/api/clinic', fetcher, {
-  //   revalidateIfStale: true,
-  //   revalidateOnFocus: true,
-  //   revalidateOnReconnect: true,
-  // });
+  const client = getClient();
   return (
-    <SessionProvider session={session}>
-      {/* <UserContext.Provider value={users}> */}
-      <Toaster />
-      <Layout>
-        <ThemeProvider>
-          <Component {...pageProps} />
-        </ThemeProvider>
-      </Layout>
-      {/* </UserContext.Provider> */}
-    </SessionProvider>
+    <ApolloProvider client={client}>
+      <SessionProvider session={session}>
+        <Toaster />
+        <Layout>
+          <ThemeProvider>
+            <Component {...pageProps} />
+          </ThemeProvider>
+        </Layout>
+      </SessionProvider>
+    </ApolloProvider>
   );
 }
