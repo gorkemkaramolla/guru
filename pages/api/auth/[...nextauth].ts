@@ -24,11 +24,11 @@ export default NextAuth({
       async authorize(credentials, req) {
         prisma.$connect();
         // check user existance
-        console.log(credentials);
+        // console.log(credentials);
         const result = await prisma.user.findFirst({
           where: { email: credentials?.email! },
         });
-        console.log(result);
+        // console.log(result);
         if (!result) {
           throw new Error('No user Found with Email Please Sign Up...!');
         }

@@ -9,7 +9,7 @@ datasource db {
 
 model User {
   id            Int           @id @default(autoincrement())
-  at            String        @db.VarChar(16)
+  at            String        @unique @db.VarChar(16)
   name          String        @db.VarChar(32)
   lastname      String        @db.VarChar(32)
   email         String        @unique @db.VarChar(255)

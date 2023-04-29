@@ -3,33 +3,54 @@ import { useRouter } from 'next/router';
 import { User } from '@prisma/client';
 import axios from 'axios';
 import { Avatar, Grid, Text } from '@nextui-org/react';
+import _ from 'lodash';
+import { getClient } from '@/lib/client';
+import { Loading } from '@nextui-org/react';
+import { gql, useQuery } from '@apollo/client';
+import { useSession } from 'next-auth/react';
 interface Props {}
 
 const Profile: React.FC<Props> = () => {
+  const client = getClient();
+  const [test, setTest] = useState();
+
+  const GET_USER = gql`
+    query GetUser($at: String!) {
+      getUser(at: $at) {
+        name
+        lastname
+        email
+        register_date
+        profilePic
+        at
+      }
+    }
+  `;
+
   const [user, setUser] = useState<User>();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>('');
   const router = useRouter();
-  function formatDate(dateStr: string): string {
-    const date = new Date(dateStr);
+  function formatDate(timestamp: number): string {
     const options: Intl.DateTimeFormatOptions = {
       day: 'numeric',
       month: 'short',
       year: 'numeric',
     };
-    const formatter = new Intl.DateTimeFormat('en-US', options);
+    const formatter = new Intl.DateTimeFormat('tr-TR', options);
+    const date = new Date(timestamp);
     return formatter.format(date);
   }
-
+  const { data } = useSession();
+  const result = useQuery(GET_USER, {
+    variables: { at: data?.user?.at },
+  });
   async function getUser(at: string) {
-    const response = await axios.get(`/api/user/${at}`);
-    console.log('I am called ');
-    return response.data.user;
+    return result.data.getUser;
   }
   useEffect(() => {
     const at = router.query.profile as string;
-    if (at) {
-      // Only call getUser if at is defined
+    if (at && result.data) {
       setLoading(true);
       getUser(at)
         .then((res) => {
@@ -42,10 +63,14 @@ const Profile: React.FC<Props> = () => {
           setLoading(false);
         });
     }
-  }, [router.query]);
+  }, [router.query, result.data]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className='w-screen h-[90vh] flex justify-center items-center'>
+        <Loading size='xl' color={'error'} textColor={'primary'} />
+      </div>
+    );
   } else if (error) {
     return <h1>{error}</h1>;
   } else
@@ -75,7 +100,7 @@ const Profile: React.FC<Props> = () => {
             @guru: {user?.at}
           </p>
           <p className='sm:text-md  text-lg leading-9 shadow-sm'>
-            a guru since: {formatDate(user?.register_date.toString()!)}
+            a guru since: {formatDate(Number(user?.register_date!))}
           </p>
         </div>
       </div>

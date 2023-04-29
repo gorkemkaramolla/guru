@@ -15,7 +15,11 @@ export default function Home() {
     query GetUser($at: String!) {
       getUser(at: $at) {
         name
+        lastname
         email
+        register_date
+        profilePic
+        at
       }
     }
   `;
@@ -24,6 +28,7 @@ export default function Home() {
       getUsers {
         name
         email
+        profilePic
       }
     }
   `;

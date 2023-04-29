@@ -1,4 +1,4 @@
-import type { ObjectId } from "mongodb";
+import type { ObjectId } from 'mongodb';
 export interface IArticle {
   _id: ObjectId;
   text: string;
@@ -18,4 +18,13 @@ export interface IUser {
   surname: string;
   password: string;
   image: string;
+}
+export interface CustomUser {
+  at?: string;
+  name?: string;
+  lastname?: string;
+  email?: string;
+  register_date?: Date;
+  role?: Role;
+  profilePic?: string;
 }
