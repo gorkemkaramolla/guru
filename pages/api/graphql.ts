@@ -1,45 +1,89 @@
 import prisma from '@/lib/prisma';
-
 import { ApolloServer } from '@apollo/server';
 import { startServerAndCreateNextHandler } from '@as-integrations/next';
 import { gql } from 'graphql-tag';
-import { authMiddleware } from '../../util/middleware';
-
+import { getSession } from 'next-auth/react';
+import { NextApiRequest } from 'next';
+import { GraphQLScalarType, Kind } from 'graphql';
+const dateScalar = new GraphQLScalarType({
+  name: 'Date',
+  description: 'Date custom scalar type',
+  serialize(value) {
+    if (value instanceof Date) {
+      return value.getTime(); // Convert outgoing Date to integer for JSON
+    }
+    throw Error('GraphQL Date Scalar serializer expected a `Date` object');
+  },
+  parseValue(value) {
+    if (typeof value === 'number') {
+      return new Date(value); // Convert incoming integer to Date
+    }
+    throw new Error('GraphQL Date Scalar parser expected a `number`');
+  },
+  parseLiteral(ast) {
+    if (ast.kind === Kind.INT) {
+      // Convert hard-coded AST string to integer and then to Date
+      return new Date(parseInt(ast.value, 10));
+    }
+    // Invalid hard-coded value (not an integer)
+    return null;
+  },
+});
 const resolvers = {
+  Date: dateScalar,
   Query: {
-    getUser: authMiddleware(async (_parent: any, { at }: any, context: any) => {
+    getUser: async (_parent: any, { at }: any, { req, res, session }: any) => {
+      prisma.$connect();
+
       const user = await prisma.user.findFirst({
         where: {
           at: at,
         },
       });
       console.log(user);
+      prisma.$disconnect();
+
       return user;
-    }),
-    getUsers: authMiddleware(async (_parent: any, _args: any, context: any) => {
+    },
+    getUsers: async (_parent: any, _args: any, context: any) => {
+      prisma.$connect();
       const users = await prisma.user.findMany();
+      prisma.$disconnect();
       return users;
-    }),
+    },
+    getPosts: async (_parent: any, _args: any, context: any) => {
+      prisma.$connect();
+      const posts = await prisma.post.findMany();
+      prisma.$disconnect();
+      console.log(posts);
+      return posts;
+    },
   },
+
   Mutation: {
-    updateUserName: authMiddleware(
-      async (_parent: any, { at, name }: any, context: any) => {
-        const updatedUser = await prisma.user.update({
-          where: { at: at },
-          data: { name: name },
-        });
-        return updatedUser;
-      }
-    ),
-    updateUserLastname: authMiddleware(
-      async (_parent: any, { at, lastname }: any, context: any) => {
-        const updatedUser = await prisma.user.update({
-          where: { at: at },
-          data: { lastname: lastname },
-        });
-        return updatedUser;
-      }
-    ),
+    updateUserName: async (
+      _parent: any,
+      { at, name }: any,
+      { req, res, session }: any
+    ) => {
+      console.log(session);
+      const updatedUser = await prisma.user.update({
+        where: { at: at },
+        data: { name: name },
+      });
+      return updatedUser;
+    },
+    updateUserLastname: async (
+      _parent: any,
+      { at, lastname }: any,
+      context: any
+    ) => {
+      const updatedUser = await prisma.user.update({
+        where: { at: at },
+        data: { lastname: lastname },
+      });
+      return updatedUser;
+    },
   },
 };
 
@@ -49,6 +93,7 @@ const typeDefs = gql`
   type Query {
     getUsers: [User]
     getUser(at: String!): User
+    getPosts: [Post]
   }
   type Mutation {
     updateUserName(at: String!, name: String!): User
@@ -62,6 +107,17 @@ const typeDefs = gql`
     at: String
     register_date: String
   }
+  scalar Date
+  type Post {
+    at: String
+    category_id: Int
+    title: String
+    content: String
+    created_at: Date
+    updated_at: Date
+    user_id: Int
+    description: String
+  }
 `;
 
 const server = new ApolloServer({
@@ -69,4 +125,12 @@ const server = new ApolloServer({
   typeDefs,
 });
 
-export default startServerAndCreateNextHandler(server);
+export default startServerAndCreateNextHandler(server, {
+  context: async (req, res) => {
+    if (req.method === 'POST') {
+      const session = await getSession({ req });
+      return { req, res, user: session || null };
+    }
+    return { req, res };
+  },
+});

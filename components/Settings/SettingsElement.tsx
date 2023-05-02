@@ -3,7 +3,9 @@ import { getSession, useSession } from 'next-auth/react';
 import { Avatar } from '@nextui-org/react';
 import ToolTip from '@/components/UI/ToolTip';
 import { CustomUser } from '@/types';
-interface Props {}
+interface Props {
+  userInformations: CustomUser;
+}
 
 import { gql, useMutation, useQuery } from '@apollo/client';
 import {
@@ -12,9 +14,11 @@ import {
   UPDATE_USER_NAME_MUTATION,
 } from '@/services/user.service';
 import SingleSettingsField from './SingleSettingField';
-import { GetServerSideProps } from 'next';
 
-const SettingsElement: React.FC<Props> = () => {
+const SettingsElement: React.FC<Props> = ({ userInformations }) => {
+  useEffect(() => {
+    setTestUser(userInformations);
+  }, []);
   const [updateUserName, responseUserName] = useMutation(
     UPDATE_USER_NAME_MUTATION
   );
@@ -23,20 +27,20 @@ const SettingsElement: React.FC<Props> = () => {
   );
 
   const { data } = useSession();
-  const responseQuery = useQuery(GET_USER, {
-    variables: { at: data?.user?.at },
-  });
-  useEffect(() => {
-    setTestUser(responseQuery?.data?.getUser);
-  }, [responseQuery.data]);
+  // const responseQuery = useQuery(GET_USER, {
+  //   variables: { at: data?.user?.at },
+  // });
+  // useEffect(() => {
+  //   setTestUser(responseQuery?.data?.getUser);
+  // }, [responseQuery.data]);
   const [testUser, setTestUser] = useState<CustomUser>();
 
   const handleUpdateName = async () => {
     try {
       const updatedUser = await updateUserName({
         variables: {
-          at: data?.user?.at,
-          name: 'New asasdasddasNaasdasme',
+          at: data?.user?.at || null,
+          name: 'gorkem',
         },
       });
       setTestUser((prevState: any) => ({

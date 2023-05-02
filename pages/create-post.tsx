@@ -12,7 +12,6 @@ const TextEditor = dynamic(() => import('../components/TextEditor'), {
   ssr: false,
 });
 export default function CreatePostPage() {
-  const session = useSession();
   const [content, setContent] = useState<string>('');
 
   function handleContentChange(value: string) {
@@ -23,9 +22,10 @@ export default function CreatePostPage() {
     event.preventDefault();
     createPost(
       content,
-      '"This is an EXAMPLE of a string with $pecial characters"    ',
+      '"This is an EXAMPLE of a string with $pecial characters"',
       1,
-      1
+      1,
+      'Bu yazıda NextJS ile nasıl getServerSideProps yazılır onu öğreneceğiz'
     )
       .then((res) => {
         console.log(res);

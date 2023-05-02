@@ -4,7 +4,8 @@ async function createPost(
   content: string,
   title: string,
   user_id: number,
-  category_id: number
+  category_id: number,
+  description: string
 ) {
   try {
     const response = await axios.post('/api/post/createpost', {
@@ -12,6 +13,7 @@ async function createPost(
       title,
       user_id,
       category_id,
+      description,
     });
 
     return response.data;

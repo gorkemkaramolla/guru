@@ -17,7 +17,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<any>
 ) {
-  const { content, title, user_id, category_id } = req.body;
+  const { content, title, user_id, category_id, description } = req.body;
 
   if (req.method === 'GET') {
     prisma.$connect();
@@ -43,6 +43,7 @@ export default async function handler(
           title,
           category_id: Number(category_id),
           at: slugAt,
+          description,
         },
       });
       res.status(200).json('New Post Successfully Created');

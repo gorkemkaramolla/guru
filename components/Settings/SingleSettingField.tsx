@@ -17,7 +17,7 @@ const SingleSettingsField: React.FC<Props> = ({
   return (
     <div className='flex flex-wrap    w-full text-start justify-between border-white  px-6  dark:bg-[rgb(14,17,22)] dark:text-white bg-slate-100 text-black py-3 border-[1px] mb-6 rounded-md'>
       <p>
-        {label}: {value}
+        {label}: {value}1w
       </p>
       <div className='flex gap-2 '>
         <button
