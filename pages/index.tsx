@@ -11,6 +11,7 @@ import PostCard from '@/components/Post/PostCard';
 
 export default function Home() {
   const client = getClient();
+
   const [test, setTest] = useState<Post[]>();
 
   const GET_USER = gql`
