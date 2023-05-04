@@ -11,12 +11,11 @@ interface Props {
 }
 
 const Home: React.FC<Props> = ({ posts }) => {
-  const url = process.env.HOST_ROOT;
   return (
     <div className='flex justify-around flex-wrap items-center'>
       {posts.map((post, i) => (
         <Link
-          href={`${url}/post/${post.at}`}
+          href={`${process.env.HOST_ROOT}post/${post.at}`}
           key={i}
           className='cursor-pointer col-span-4 my-3'
         >
