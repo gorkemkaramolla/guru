@@ -8,7 +8,7 @@ export const getClient = () => {
   if (!client || typeof window === 'undefined') {
     client = new ApolloClient({
       link: new HttpLink({
-        uri: 'https://alpha-guru.vercel.app/api/graphql',
+        uri: `${process.env.GRAPHQL_HOST}`,
       }),
       cache: new InMemoryCache(),
     });
