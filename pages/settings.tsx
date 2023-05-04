@@ -1,5 +1,5 @@
-import client from '@/apollo-client';
 import SettingsElement from '@/components/Settings/SettingsElement';
+import { getClient } from '@/lib/client';
 import { UPDATE_USER_NAME_MUTATION } from '@/services/user.service';
 import { CustomUser } from '@/types';
 import { gql } from '@apollo/client';
@@ -33,6 +33,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
       },
     };
   }
+  const client = getClient();
   const { data } = await client.query({
     query: gql`
       query GetUser($at: String!) {
