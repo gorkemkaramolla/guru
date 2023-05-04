@@ -19,9 +19,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
   const postQuery = query.post as string;
 
   try {
-    const { data } = await axios.get(
-      `http://localhost:3000/api/post/${postQuery}`
-    );
+    const { data } = await axios.get(`/api/post/${postQuery}`);
     const post = data.fetchpost;
 
     return {
