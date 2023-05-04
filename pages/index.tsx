@@ -4,6 +4,7 @@ import { Post } from '@prisma/client';
 import PostCard from '@/components/Post/PostCard';
 import Link from 'next/link';
 import { getClient } from '@/lib/client';
+import { getSession } from 'next-auth/react';
 
 interface Props {
   posts: Post[];
@@ -12,7 +13,7 @@ interface Props {
 const Home: React.FC<Props> = ({ posts }) => {
   return (
     <div className='flex justify-around flex-wrap items-center'>
-      {/* {posts.map((post, i) => (
+      {posts.map((post, i) => (
         <Link
           key={i}
           className='cursor-pointer col-span-4 my-3'
@@ -20,30 +21,42 @@ const Home: React.FC<Props> = ({ posts }) => {
         >
           <PostCard post={post} />
         </Link>
-      ))} */}
+      ))}
     </div>
   );
 };
 
-// export const getServerSideProps: GetServerSideProps<Props> = async () => {
-//   const client = getClient();
-//   const { data } = await client.query({
-//     query: gql`
-//       query {
-//         getPosts {
-//           at
-//           title
-//           description
-//         }
-//       }
-//     `,
-//   });
+export const getServerSideProps: GetServerSideProps<Props> = async (
+  context
+) => {
+  const session = await getSession(context);
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
+  }
+  const client = getClient();
 
-//   return {
-//     props: {
-//       posts: data.getPosts,
-//     },
-//   };
-// };
+  const { data } = await client.query({
+    query: gql`
+      query {
+        getPosts {
+          at
+          title
+          description
+        }
+      }
+    `,
+  });
+
+  return {
+    props: {
+      posts: data.getPosts,
+    },
+  };
+};
 
 export default Home;

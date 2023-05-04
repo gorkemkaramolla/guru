@@ -120,12 +120,4 @@ const server = new ApolloServer({
   typeDefs,
 });
 
-export default startServerAndCreateNextHandler(server, {
-  context: async (req, res) => {
-    if (req.method === 'POST') {
-      const session = await getSession({ req });
-      return { req, res, user: session || null };
-    }
-    return { req, res };
-  },
-});
+export default startServerAndCreateNextHandler(server, {});
