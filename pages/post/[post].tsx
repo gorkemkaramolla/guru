@@ -20,7 +20,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
 
   try {
     const { data } = await axios.get(
-      `http://localhost:3000/api/post/${postQuery}`
+      `${process.env.HOST_ROOT}api/post/${postQuery}`
     );
     const post = data.fetchpost;
 
