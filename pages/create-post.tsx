@@ -27,9 +27,7 @@ export default function CreatePostPage() {
       1,
       'Bu yazıda NextJS ile nasıl getServerSideProps yazılır onu öğreneceğiz'
     )
-      .then((res) => {
-        console.log(res);
-      })
+      .then((res) => {})
       .catch((e) => {
         console.log(e);
       });

@@ -38,7 +38,6 @@ const resolvers = {
           at: at,
         },
       });
-      console.log(user);
       prisma.$disconnect();
 
       return user;
@@ -53,7 +52,6 @@ const resolvers = {
       prisma.$connect();
       const posts = await prisma.post.findMany();
       prisma.$disconnect();
-      console.log(posts);
       return posts;
     },
   },
@@ -64,7 +62,6 @@ const resolvers = {
       { at, name }: any,
       { req, res, session }: any
     ) => {
-      console.log(session);
       const updatedUser = await prisma.user.update({
         where: { at: at },
         data: { name: name },

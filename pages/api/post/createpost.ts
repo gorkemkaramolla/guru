@@ -31,9 +31,6 @@ export default async function handler(
   } else if (req.method === 'POST') {
     prisma.$connect();
     const slugAt = generateSlug(title);
-    console.log(slugAt);
-    console.log(user_id);
-    console.log(category_id);
 
     try {
       await prisma.post.create({
