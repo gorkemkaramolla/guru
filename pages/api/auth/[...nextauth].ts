@@ -109,7 +109,7 @@ export default NextAuth({
     },
     async session({ session, token }: { session: any; token: any }) {
       // Send properties to the client, like an access_token from a provider.
-      if (token && session.user) {
+      if (token && session?.user) {
         session.user.role = token.role;
         session.accessToken = token.accessToken;
         session.user.at = token.at;
@@ -119,11 +119,11 @@ export default NextAuth({
   },
   session: {
     strategy: 'jwt' as SessionStrategy,
-    maxAge: 36000,
+    maxAge: 3600000,
   },
   jwt: {
     secret: process.env.NEXTAUTH_SECRET!,
-    maxAge: 36000, // 60 secs
+    maxAge: 3600000, // 60 secs
   },
   secret: process.env.NEXTAUTH_SECRET!,
 });
