@@ -14,7 +14,7 @@ interface Props {
 
 const Home: React.FC<Props> = ({ posts }) => {
   return (
-    <div className='flex justify-around flex-wrap items-center'>
+    <div className='flex justify-around  bg-red-100 flex-wrap items-center'>
       {posts.map((post, i) => (
         <div key={i}>
           <Link
