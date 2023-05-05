@@ -14,24 +14,14 @@ interface Props {
 
 const Home: React.FC<Props> = ({ posts }) => {
   return (
-    <div className='flex justify-around  bg-red-100 flex-wrap items-center'>
-      {posts.map((post, i) => (
-        <div key={i}>
-          <Link
-            href={`${process.env.HOST_ROOT}${post.user.at}`}
-            className='flex items-center gap-3 border-2'
-          >
-            <Avatar src={post?.user?.profilePic} />
-            <p>{post.user.name + ' ' + post.user.lastname}</p>
-          </Link>
-          <Link
-            href={`${process.env.HOST_ROOT}post/${post.at}`}
-            className='cursor-pointer col-span-4 my-3'
-          >
+    <div className='grid grid-cols-12 container mx-auto'>
+      <div className='col-span-12 md:col-span-6 flex flex-col '>
+        {posts.map((post, i) => (
+          <div key={i} className='col-span-3  '>
             <PostCard post={post} />
-          </Link>
-        </div>
-      ))}
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
