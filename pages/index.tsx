@@ -39,15 +39,6 @@ const Home: React.FC<Props> = ({ posts }) => {
 export const getServerSideProps: GetServerSideProps<Props> = async (
   context
 ) => {
-  const session = await getSession(context);
-  if (!session) {
-    return {
-      redirect: {
-        destination: '/login',
-        permanent: false,
-      },
-    };
-  }
   const client = getClient();
 
   const { data } = await client.query({
