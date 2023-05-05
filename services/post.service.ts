@@ -3,7 +3,7 @@ import axios from 'axios';
 async function createPost(
   content: string,
   title: string,
-  user_id: number,
+  at: string,
   category_id: number,
   description: string
 ) {
@@ -11,7 +11,7 @@ async function createPost(
     const response = await axios.post('/api/post/createpost', {
       content,
       title,
-      user_id,
+      at,
       category_id,
       description,
     });

@@ -13,6 +13,16 @@ export default async function handler(
         where: {
           at: post as string,
         },
+        include: {
+          user: {
+            select: {
+              name: true,
+              lastname: true,
+              profilePic: true,
+              at: true,
+            },
+          },
+        },
       });
       res.status(200).json({ fetchpost });
     } catch (e) {

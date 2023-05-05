@@ -17,7 +17,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<any>
 ) {
-  const { content, title, user_id, category_id, description } = req.body;
+  const { content, title, at, category_id, description } = req.body;
 
   if (req.method === 'GET') {
     prisma.$connect();
@@ -31,12 +31,16 @@ export default async function handler(
   } else if (req.method === 'POST') {
     prisma.$connect();
     const slugAt = generateSlug(title);
-
+    const user = await prisma.user.findFirstOrThrow({
+      where: {
+        at: at,
+      },
+    });
     try {
       await prisma.post.create({
         data: {
           content: content,
-          user_id: Number(user_id),
+          user_id: Number(user.id),
           title,
           category_id: Number(category_id),
           at: slugAt,

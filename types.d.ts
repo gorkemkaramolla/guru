@@ -1,4 +1,6 @@
 import type { ObjectId } from 'mongodb';
+import { Post, User } from '@prisma/client';
+
 export interface IArticle {
   _id: ObjectId;
   text: string;
@@ -27,4 +29,7 @@ export interface CustomUser {
   register_date?: Date;
   role?: Role;
   profilePic?: string;
+}
+export interface PostWithUser extends Post {
+  user: User;
 }

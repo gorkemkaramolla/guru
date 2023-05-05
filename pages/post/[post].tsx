@@ -1,17 +1,16 @@
 import React from 'react';
 import { GetServerSideProps } from 'next';
-import { Post } from '@prisma/client';
+import { Post, User } from '@prisma/client';
 import axios from 'axios';
 import PostClient from '@/components/Post/PostClient';
+import { PostWithUser } from '@/types';
 
 interface Props {
-  post: Post;
+  post: PostWithUser;
 }
-
 const PostPage: React.FC<Props> = ({ post }) => {
   return <div>{post ? <PostClient post={post} /> : <div>Loading...</div>}</div>;
 };
-
 export const getServerSideProps: GetServerSideProps<Props> = async (
   context
 ) => {
@@ -23,7 +22,6 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
       `${process.env.HOST_ROOT}api/post/${postQuery}`
     );
     const post = data.fetchpost;
-
     return {
       props: {
         post,

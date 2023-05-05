@@ -1,7 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { PrismaClient } from '@prisma/client';
 import { hash } from 'bcryptjs';
-import { v4 as uuidv4 } from 'uuid';
 
 const prisma = new PrismaClient();
 export default async function handler(
@@ -28,7 +27,6 @@ export default async function handler(
           password: await hash(password.trim(), 10),
           role: role,
           profilePic: '',
-          at: uuidv4(),
         },
       })
       .then((value) => res.status(201).json({ status: true, user: value }))

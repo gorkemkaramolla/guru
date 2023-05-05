@@ -9,7 +9,7 @@ datasource db {
 
 model User {
   id            Int           @id @default(autoincrement())
-  at            String        @unique @db.VarChar(16)
+  at            String?       @unique @default(uuid())
   name          String        @db.VarChar(32)
   lastname      String        @db.VarChar(32)
   email         String        @unique @db.VarChar(255)
@@ -25,6 +25,7 @@ model User {
   // Validation rules
   CategoryModerator CategoryModerator[]
 
+  @@index([at])
   @@map("users")
 }
 
@@ -46,8 +47,9 @@ model CategoryModerator {
 }
 
 model Post {
-  id          Int        @id @unique @default(autoincrement())
-  at          String     @unique
+  id Int    @id @unique @default(autoincrement())
+  at String @unique
+
   category_id Int
   category    Category   @relation(fields: [category_id], references: [id])
   title       String
@@ -61,6 +63,7 @@ model Post {
   comments    Comment[]
   likes       PostLike[]
 
+  @@index([at])
   @@map("posts")
 }
 

@@ -1,7 +1,8 @@
 import React from 'react';
 import type { Post } from '@prisma/client';
+import { PostWithUser } from '@/types';
 interface Props {
-  post: Post;
+  post: PostWithUser;
 }
 
 const PostClient: React.FC<Props> = ({ post }) => {

@@ -8,7 +8,6 @@ import { Role } from '@/nextauth';
 import { compare } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
 import _ from 'lodash';
-import { v4 as uuidv4 } from 'uuid';
 
 const prisma = new PrismaClient();
 
@@ -83,7 +82,6 @@ export default NextAuth({
               name: user?.name?.split(' ')?.at(0)!,
               lastname: user?.name?.split(' ')?.at(1)!,
               profilePic: user?.image!,
-              at: uuidv4(),
             },
           });
         }

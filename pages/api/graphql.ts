@@ -50,36 +50,47 @@ const resolvers = {
     },
     getPosts: async (_parent: any, _args: any, context: any) => {
       prisma.$connect();
-      const posts = await prisma.post.findMany();
+      const posts = await prisma.post.findMany({
+        include: {
+          user: {
+            select: {
+              name: true,
+              lastname: true,
+              profilePic: true,
+              at: true,
+            },
+          },
+        },
+      });
       prisma.$disconnect();
       return posts;
     },
   },
 
-  Mutation: {
-    updateUserName: async (
-      _parent: any,
-      { at, name }: any,
-      { req, res, session }: any
-    ) => {
-      const updatedUser = await prisma.user.update({
-        where: { at: at },
-        data: { name: name },
-      });
-      return updatedUser;
-    },
-    updateUserLastname: async (
-      _parent: any,
-      { at, lastname }: any,
-      context: any
-    ) => {
-      const updatedUser = await prisma.user.update({
-        where: { at: at },
-        data: { lastname: lastname },
-      });
-      return updatedUser;
-    },
-  },
+  // Mutation: {
+  //   updateUserName: async (
+  //     _parent: any,
+  //     { at, name }: any,
+  //     { req, res, session }: any
+  //   ) => {
+  //     const updatedUser = await prisma.user.update({
+  //       where: { at: at },
+  //       data: { name: name },
+  //     });
+  //     return updatedUser;
+  //   },
+  //   updateUserLastname: async (
+  //     _parent: any,
+  //     { at, lastname }: any,
+  //     context: any
+  //   ) => {
+  //     const updatedUser = await prisma.user.update({
+  //       where: { at: at },
+  //       data: { lastname: lastname },
+  //     });
+  //     return updatedUser;
+  //   },
+  // },
 };
 
 // ...
@@ -112,6 +123,7 @@ const typeDefs = gql`
     updated_at: Date
     user_id: Int
     description: String
+    user: User
   }
 `;
 
