@@ -92,7 +92,7 @@ const Navbar = () => {
             <NavLink key={link} title={link} path={links[link]} />
           ))}
         </div>
-        <div className='flex space-x-4 items-center'>
+        <div className='flex space-x-4   items-center'>
           <div className='lg:hidden'>
             <IconButton
               aria-label='more'

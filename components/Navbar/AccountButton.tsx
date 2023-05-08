@@ -1,14 +1,16 @@
 import { Dropdown, Avatar, Text, User } from '@nextui-org/react';
 import { signOut, useSession } from 'next-auth/react';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 export default function App() {
   const session = useSession();
   const router = useRouter();
+  const root = process.env.HOST_ROOT;
   return (
     <Dropdown placement='bottom-right'>
       <Dropdown.Trigger>
         <div>
-          <div className='md:hidden'>
+          <div className='md:hidden '>
             <Avatar
               bordered
               size='lg'
@@ -29,7 +31,8 @@ export default function App() {
                 // session.data?.user?.name
                 //   ?.replaceAll(' ', '')
                 //   .toLocaleLowerCase()
-                session.data?.user?.at
+                session.data?.user?.at?.substring(0, 16) +
+                '...'
               }
               src={session.data?.user?.image!}
             />
@@ -37,26 +40,25 @@ export default function App() {
         </div>
       </Dropdown.Trigger>
       <Dropdown.Menu
-        css={{ $$dropdownMenuWidth: '390px' }}
+        css={{ $$dropdownMenuWidth: '300px' }}
         color='secondary'
         aria-label='Avatar Actions'
       >
-        <Dropdown.Item key='profile' css={{ height: '$18' }}>
-          <Text
-            onClick={() => {
-              router.push(session.data?.user?.at!);
-            }}
-            b
-            color='inherit'
-            css={{ d: 'flex' }}
-          >
-            User :{session.data?.user?.at!}
-          </Text>
+        <Dropdown.Item
+          key='profile'
+          css={{ height: '$18', padding: 0, textAlign: 'center' }}
+        >
+          <Link href={`${root}${session.data?.user?.at!}`}>
+            <Text b color='inherit' css={{ d: 'flex', padding: 0 }}>
+              User :{session.data?.user?.at!}
+            </Text>
+          </Link>
         </Dropdown.Item>
+
         <Dropdown.Item key='settings' withDivider>
           <Text
             onClick={() => {
-              router.push('/settings');
+              router.push(`${root}settings`);
             }}
           >
             My Settings

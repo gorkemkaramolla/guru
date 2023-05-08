@@ -10,7 +10,7 @@ interface Props {
 
 const PostCard: React.FC<Props> = ({ post }) => {
   return (
-    <div className='dark:hover:bg-black hover:bg-gray-100  transition-colors m-3 flex flex-col  justify-center gap-1 p-6 rounded-xl py-4'>
+    <div className='dark:hover:bg-black hover:shadow-md transition-all m-3 flex flex-col  justify-center gap-1 p-6 rounded-xl py-4'>
       <Link
         href={`${process.env.HOST_ROOT}${post.user.at}`}
         className='flex items-center   gap-3'
