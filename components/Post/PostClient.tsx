@@ -3,9 +3,13 @@ import type { Post } from '@prisma/client';
 import { PostWithUser } from '@/types';
 import hljs from 'highlight.js/lib/core';
 import javascript from 'highlight.js/lib/languages/javascript';
-import 'highlight.js/styles/atom-one-dark.css';
-
-hljs.registerLanguage('xml', require('highlight.js/lib/languages/xml'));
+import xml from 'highlight.js/lib/languages/xml';
+import python from 'highlight.js/lib/languages/python';
+// import 'highlight.js/styles/atom-one-dark.css';
+import 'highlight.js/styles/atom-one-light.css';
+hljs.registerLanguage('javascript', javascript);
+hljs.registerLanguage('xml', xml);
+hljs.registerLanguage('python', python);
 
 interface Props {
   post: PostWithUser;
@@ -13,9 +17,9 @@ interface Props {
 
 const PostClient: React.FC<Props> = ({ post }) => {
   useEffect(() => {
-    const codeBlocks = document.querySelectorAll('pre code');
+    const codeBlocks = document.querySelectorAll('pre');
     codeBlocks.forEach((block) => {
-      hljs.highlightBlock(block as HTMLElement);
+      return hljs.highlightElement(block);
     });
   }, []);
 
@@ -29,12 +33,14 @@ const PostClient: React.FC<Props> = ({ post }) => {
         <div
           className='break-words dark:text-white text-black'
           dangerouslySetInnerHTML={{
-            __html: post.content
-              .replace(/<img([^>]+)>/gi, '<img$1 class="my-12 mx-auto"/>')
-              .replace(
-                /<code>(.*?)<\/code>/gis,
-                '<pre style="display:block"><code>$1</code></pre>'
-              ),
+            __html: post.content.replace(
+              /<img([^>]+)>/gi,
+              '<img$1 class="my-12 mx-auto"/>'
+            ),
+            // .replace(
+            //   /<pre>(.*?)<\/pre>/gis,
+            //   '<pre  style="display:block"><code>$1</code></pre>'
+            // ),
           }}
         />
 

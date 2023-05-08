@@ -51,41 +51,19 @@ const Navbar = () => {
           <Image
             width={140}
             height={54}
-            className='h-10 hidden md:block'
+            className='h-auto w-auto hidden md:block'
             src='/logo2.png'
             alt='logo'
           />
           <Image
             width={54}
             height={54}
-            className='h-10 md:hidden'
+            className='h-auto w-auto md:hidden'
             src='/logo1.png'
             alt='logo'
-          />{' '}
+          />
         </Link>
 
-        {/* <div className='relative rounded-md shadow-sm '>
-        <input
-          id='search'
-          className='text-xs md:text-md py-2 pl-6 md:pl-10 w-full leading-3 md:leading-5 rounded-md transition duration-150 ease-in-out sm:text-sm'
-          placeholder='Search on Guru'
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-        />
-        <div className='absolute inset-y-0 left-0 pl-1 md:pl-3 flex items-center pointer-events-none'>
-          <svg
-            className='h-5 w-5 text-gray-400'
-            viewBox='0 0 20 20'
-            fill='currentColor'
-          >
-            <path
-              fillRule='evenodd'
-              d='M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z'
-              clipRule='evenodd'
-            />
-          </svg>
-        </div>
-      </div> */}
         <SearchBar />
         <div className='hidden lg:flex space-x-2 lg:space-x-4'>
           {Object.keys(links).map((link) => (

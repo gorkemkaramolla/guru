@@ -55,7 +55,7 @@ const FakeEditor: React.FC<Props> = ({ handleContentChange, value }) => {
     setCodeActive(!codeActive);
     codeActive
       ? document.execCommand('formatBlock', false, '<div>')
-      : document.execCommand('formatBlock', false, '<pre>');
+      : document.execCommand('formatBlock', true, '<pre>');
   };
 
   // Add event listener
