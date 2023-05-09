@@ -9,6 +9,7 @@ import { useSession } from 'next-auth/react';
 import { createPost } from '@/services/post.service';
 import FakeEditor from '@/components/FakeEditor/FakeEditor';
 import PostPage from './post/[post]';
+import PostClient from '@/components/Post/PostClient';
 
 const TextEditor = dynamic(() => import('../components/TextEditor'), {
   ssr: false,
@@ -86,7 +87,20 @@ export default function CreatePostPage() {
       {editorMode === 'preview' && (
         <div className=' col-span-12'>
           <h1 className='text-2xl text-blue-500'>Preview</h1>
-          <PostPage post={{ at: session.data?.user?.at!, content: content }} />
+          <PostClient
+            post={{
+              id: 1,
+              category_id: 2,
+              title: 'Sample Post',
+              content: content,
+              created_at: new Date(),
+              updated_at: new Date(),
+              at: 'some_at_value',
+              description: 'some_description_value',
+              user_id: 1,
+              tags: 'tag1',
+            }}
+          />
         </div>
       )}
     </div>

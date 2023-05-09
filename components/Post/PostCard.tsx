@@ -12,11 +12,13 @@ const PostCard: React.FC<Props> = ({ post }) => {
   return (
     <div className='dark:hover:bg-black hover:shadow-md transition-all m-3 flex flex-col  justify-center gap-1 p-6 rounded-xl py-4'>
       <Link
-        href={`${process.env.HOST_ROOT}${post.user.at}`}
+        href={`${process.env.HOST_ROOT}${post?.user?.at}`}
         className='flex items-center   gap-3'
       >
         <Avatar sx={{ width: 32, height: 32 }} src={post?.user?.profilePic} />
-        <p className='text-md '>{post.user.name + ' ' + post.user.lastname}</p>
+        <p className='text-md '>
+          {post?.user?.name + ' ' + post.user?.lastname}
+        </p>
       </Link>
       <Link
         href={`${process.env.HOST_ROOT}post/${post.at}`}

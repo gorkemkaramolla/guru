@@ -26,7 +26,14 @@ const FakeEditor: React.FC<Props> = ({ handleContentChange, value }) => {
       handleContentChange(innerHTML);
     }
   }, [handleContentChange]);
-
+  const handleKeyDown = useCallback(
+    (event: React.KeyboardEvent<HTMLDivElement>) => {
+      if (event.key === 'Enter') {
+        setHeadingActive(-1);
+      }
+    },
+    []
+  );
   const handlePaste = useCallback(
     (event: React.ClipboardEvent<HTMLDivElement>) => {
       const clipboardData = event.clipboardData;
@@ -148,6 +155,7 @@ const FakeEditor: React.FC<Props> = ({ handleContentChange, value }) => {
         onPaste={handlePaste}
         ref={editorRef}
         onInput={handleContent}
+        onKeyDown={handleKeyDown}
       ></p>
     </div>
   );

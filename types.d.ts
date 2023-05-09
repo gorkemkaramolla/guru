@@ -31,5 +31,5 @@ export interface CustomUser {
   profilePic?: string;
 }
 export interface PostWithUser extends Post {
-  user: User;
+  user?: User;
 }
