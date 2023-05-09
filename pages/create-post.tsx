@@ -23,8 +23,17 @@ export default function CreatePostPage() {
   }
 
   function handleSubmit(event: any) {
+    const preRegex = /<pre>(.*?)<\/pre>/gs;
+    const brRegex = /<br>/g;
+
+    const modifiedContent = content.replace(preRegex, (match, p1) => {
+      // replace <br> tags with new <pre> tags
+      const modifiedPre = p1.replace(brRegex, '</pre><pre>');
+      return `<pre>${modifiedPre}</pre>`;
+    });
+
     createPost(
-      content,
+      modifiedContent,
       '"This is an EXAMPLE of a string with $pecial characters"',
       session.data?.user?.at!,
       1,
