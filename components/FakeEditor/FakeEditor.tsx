@@ -1,4 +1,3 @@
-import { Button, Popover } from '@nextui-org/react';
 import React, { useEffect, useState, useCallback } from 'react';
 import { useRef } from 'react';
 import PopOver from '../UI/PopOver';
@@ -7,7 +6,6 @@ interface Props {
   handleContentChange: (text: string) => void;
   value: string;
 }
-
 const FakeEditor: React.FC<Props> = ({ handleContentChange, value }) => {
   const buttons = ['bold', 'italic', 'underline', 'h1', 'h2', 'h3', 'code'];
   const [buttonActive, setButtonActive] = useState<string[]>([]);

@@ -1,10 +1,8 @@
 import React from 'react';
 import { GetServerSideProps } from 'next';
-import { Post, User } from '@prisma/client';
 import axios from 'axios';
 import PostClient from '@/components/Post/PostClient';
 import { PostWithUser } from '@/types';
-
 interface Props {
   post: PostWithUser;
 }

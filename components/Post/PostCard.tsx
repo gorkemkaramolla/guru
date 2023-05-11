@@ -1,9 +1,7 @@
 import { PostWithUser } from '@/types';
 import { Avatar } from '@mui/material';
-import { Post } from '@prisma/client';
 import Link from 'next/link';
 import React from 'react';
-
 interface Props {
   post: PostWithUser;
 }

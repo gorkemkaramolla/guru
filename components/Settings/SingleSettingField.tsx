@@ -1,7 +1,5 @@
-import { User } from '@prisma/client';
 import React from 'react';
 import ToolTip from '@/components/UI/ToolTip';
-
 interface Props {
   field: {
     label: string;

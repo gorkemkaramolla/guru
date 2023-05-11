@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { getSession, useSession } from 'next-auth/react';
-import { Avatar } from '@nextui-org/react';
-import ToolTip from '@/components/UI/ToolTip';
+import { useSession } from 'next-auth/react';
 import { CustomUser } from '@/types';
 interface Props {
   userInformations: CustomUser;
 }
-
 import { gql, useMutation, useQuery } from '@apollo/client';
 import {
   GET_USER,

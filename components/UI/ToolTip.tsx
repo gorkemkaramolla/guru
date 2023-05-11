@@ -1,5 +1,5 @@
 import React from 'react';
-import { Tooltip, Button } from '@nextui-org/react';
+import { Tooltip } from '@nextui-org/react';
 interface Props {
   message: string;
 }

@@ -1,13 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
 import { User } from '@prisma/client';
-import axios from 'axios';
-import { Avatar, Grid, Text } from '@nextui-org/react';
+import { Avatar, Text } from '@nextui-org/react';
 import _ from 'lodash';
 import { getClient } from '@/lib/client';
 import { Loading } from '@nextui-org/react';
-import { gql, useQuery } from '@apollo/client';
-import { useSession } from 'next-auth/react';
+import { gql } from '@apollo/client';
 import { GetServerSideProps } from 'next';
 
 interface Props {

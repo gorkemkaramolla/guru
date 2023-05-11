@@ -1,14 +1,9 @@
 import { useState } from 'react';
-
-import Layout from '../components/Layout/Layout';
-import { Button } from '@mui/material';
 import dynamic from 'next/dynamic';
 import { getSession, useSession } from 'next-auth/react';
 import { createPost } from '@/services/post.service';
 import FakeEditor from '@/components/FakeEditor/FakeEditor';
-import PostPage from './post/[post]';
 import PostClient from '@/components/Post/PostClient';
-import { getClient } from '@/lib/client';
 import { GetServerSideProps } from 'next';
 interface Props {}
 const TextEditor = dynamic(() => import('../components/TextEditor'), {

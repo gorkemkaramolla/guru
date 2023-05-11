@@ -1,11 +1,8 @@
-import React, { useState } from 'react';
-import { Popover, Button, Text } from '@nextui-org/react';
-
+import { Popover } from '@nextui-org/react';
 interface Props {
   handleColor: (color: string) => void;
   popIsOpen: boolean;
 }
-
 const PopOver: React.FC<Props> = ({ handleColor, popIsOpen }) => {
   const colors = [
     'red',

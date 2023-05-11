@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import type { Post } from '@prisma/client';
 import { PostWithUser } from '@/types';
 import hljs from 'highlight.js/lib/core';
 import javascript from 'highlight.js/lib/languages/javascript';

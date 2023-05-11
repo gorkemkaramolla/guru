@@ -2,8 +2,6 @@ import prisma from '@/lib/prisma';
 import { ApolloServer } from '@apollo/server';
 import { startServerAndCreateNextHandler } from '@as-integrations/next';
 import { gql } from 'graphql-tag';
-import { getSession } from 'next-auth/react';
-import { NextApiRequest } from 'next';
 import { GraphQLScalarType, Kind } from 'graphql';
 const dateScalar = new GraphQLScalarType({
   name: 'Date',
