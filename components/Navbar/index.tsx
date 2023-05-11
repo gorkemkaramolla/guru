@@ -48,13 +48,13 @@ const Navbar = () => {
     return (
       <div className=' bg-white dark:bg-black fixed top-0 left-0 right-0 flex py-2 z-[100] justify-around items-center border shadow-sm w-full '>
         <Link href='/'>
-          <Image
+          {/* <Image
             width={140}
             height={54}
             className='h-auto w-auto hidden md:block'
             src='/logo2.png'
             alt='logo'
-          />
+          /> */}
           <Image
             width={54}
             height={54}
