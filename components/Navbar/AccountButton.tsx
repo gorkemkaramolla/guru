@@ -22,7 +22,8 @@ export default function App(props: Props) {
   const [userInfo, setUserInfo] = useState<UserInfo>();
 
   const currentUser = useSelector((state: RootState) => state.user);
-
+  const mode =
+    typeof window !== 'undefined' ? localStorage.getItem('theme') ?? '' : '';
   useEffect(() => {}, []);
   return (
     <Dropdown placement='bottom-right'>
@@ -39,18 +40,17 @@ export default function App(props: Props) {
           </div>
           <div className='hidden md:block'>
             <User
+              color='success'
               bordered
               as='button'
               size='lg'
-              color='primary'
-              name={currentUser.name}
+              name={
+                <p className='dark:text-white  text-gray-700'>
+                  {currentUser.name}
+                </p>
+              }
               description={
-                '@' +
-                // session.data?.user?.name
-                //   ?.replaceAll(' ', '')
-                //   .toLocaleLowerCase()
-                session.data?.user?.at?.substring(0, 16) +
-                '...'
+                '@' + (session.data?.user?.at?.substring(0, 16) + '...')
               }
               src={session.data?.user?.image!}
             />
@@ -64,10 +64,13 @@ export default function App(props: Props) {
       >
         <Dropdown.Item
           key='profile'
-          css={{ height: '$18', padding: 0, textAlign: 'center' }}
+          css={{
+            height: '$18',
+            textAlign: 'center',
+          }}
         >
           <Link href={`${root}${currentUser.at}`}>
-            <Text b color='inherit' css={{ d: 'flex', padding: 0 }}>
+            <Text b color='inherit' css={{ d: 'flex', padding: '5px' }}>
               User :{currentUser.at}
             </Text>
           </Link>

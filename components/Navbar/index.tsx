@@ -58,12 +58,12 @@ const Navbar = () => {
 
   if (isBrowser)
     return (
-      <div className=' bg-white dark:bg-black fixed top-0 left-0 right-0 flex py-2 z-[100] justify-around items-center border shadow-sm w-full '>
+      <div className=' bg-white dark:text-white dark:bg-dark fixed top-0 left-0 right-0 flex py-2 z-[100] justify-around items-center  shadow-sm w-full '>
         <Link href='/'>
           <Image
             width={140}
             height={54}
-            className='h-auto w-auto hidden md:block'
+            className='hidden md:block'
             src='/logo2.png'
             alt='logo'
           />
@@ -85,17 +85,18 @@ const Navbar = () => {
         <div className='flex space-x-4   items-center'>
           <div className='lg:hidden'>
             <IconButton
+              size='large'
               aria-label='more'
               id='long-button'
               aria-controls={open ? 'long-menu' : undefined}
               aria-expanded={open ? 'true' : undefined}
               aria-haspopup='true'
               onClick={handleClick}
-              className='text-white p-0'
+              className='text-white p-0 '
             >
               <MenuIcon
                 id='menuicon'
-                className='text-4xl text-[rgb(9,87,243)]'
+                className='text-4xl text-[rgb(9,87,243)] scale-125'
               />
             </IconButton>
             <Menu

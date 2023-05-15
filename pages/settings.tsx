@@ -15,7 +15,7 @@ interface Props {
   userInformations: CustomUser;
 }
 
-const settings: React.FC<Props> = ({ userInformations }) => {
+const Settings: React.FC<Props> = ({ userInformations }) => {
   const dispatch = useDispatch();
 
   return (
@@ -73,4 +73,4 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
     },
   };
 };
-export default settings;
+export default Settings;
