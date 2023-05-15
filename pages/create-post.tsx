@@ -6,9 +6,9 @@ import FakeEditor from '@/components/FakeEditor/FakeEditor';
 import PostClient from '@/components/Post/PostClient';
 import { GetServerSideProps } from 'next';
 interface Props {}
-const TextEditor = dynamic(() => import('../components/TextEditor'), {
-  ssr: false,
-});
+// const TextEditor = dynamic(() => import('../components/TextEditor'), {
+//   ssr: false,
+// });
 export default function CreatePostPage() {
   const [content, setContent] = useState<string>('');
   const [editorMode, setEditorMode] = useState<string>('editor');

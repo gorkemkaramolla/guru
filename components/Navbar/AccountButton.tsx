@@ -1,11 +1,29 @@
 import { Dropdown, Avatar, Text, User } from '@nextui-org/react';
+import { User as Userx } from '@prisma/client';
+import axios from 'axios';
+import { GetServerSideProps } from 'next';
 import { signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-export default function App() {
+import { useEffect, useState } from 'react';
+import { RootState } from '@/store';
+import { useSelector } from 'react-redux';
+interface Props {}
+interface UserInfo {
+  name: string;
+  at: string;
+  email: string;
+}
+
+export default function App(props: Props) {
   const session = useSession();
   const router = useRouter();
   const root = process.env.HOST_ROOT;
+  const [userInfo, setUserInfo] = useState<UserInfo>();
+
+  const currentUser = useSelector((state: RootState) => state.user);
+
+  useEffect(() => {}, []);
   return (
     <Dropdown placement='bottom-right'>
       <Dropdown.Trigger>
@@ -25,7 +43,7 @@ export default function App() {
               as='button'
               size='lg'
               color='primary'
-              name={session.data?.user?.name}
+              name={currentUser.name}
               description={
                 '@' +
                 // session.data?.user?.name
@@ -48,9 +66,9 @@ export default function App() {
           key='profile'
           css={{ height: '$18', padding: 0, textAlign: 'center' }}
         >
-          <Link href={`${root}${session.data?.user?.at!}`}>
+          <Link href={`${root}${currentUser.at}`}>
             <Text b color='inherit' css={{ d: 'flex', padding: 0 }}>
-              User :{session.data?.user?.at!}
+              User :{currentUser.at}
             </Text>
           </Link>
         </Dropdown.Item>

@@ -6,21 +6,28 @@ import Layout from '@/components/Layout/Layout';
 import { ThemeProvider } from '@/context/ThemeContext';
 import { ApolloProvider } from '@apollo/client';
 import { getClient } from '@/lib/client';
+import store from '@/store';
+import { Provider } from 'react-redux';
+import { useEffect } from 'react';
+import axios from 'axios';
 export default function App({
   Component,
   pageProps: { session, ...pageProps },
 }: AppProps) {
   const client = getClient();
+
   return (
-    <ApolloProvider client={client}>
-      <SessionProvider session={session}>
-        <Toaster />
-        <Layout>
-          <ThemeProvider>
-            <Component {...pageProps} />
-          </ThemeProvider>
-        </Layout>
-      </SessionProvider>
-    </ApolloProvider>
+    <Provider store={store}>
+      <ApolloProvider client={client}>
+        <SessionProvider session={session}>
+          <Toaster />
+          <Layout>
+            <ThemeProvider>
+              <Component {...pageProps} />
+            </ThemeProvider>
+          </Layout>
+        </SessionProvider>
+      </ApolloProvider>
+    </Provider>
   );
 }

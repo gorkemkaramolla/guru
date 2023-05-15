@@ -1,21 +1,27 @@
 import SettingsElement from '@/components/Settings/SettingsElement';
 import { getClient } from '@/lib/client';
+import { setUser } from '@/redux/exampleSlice';
 import { UPDATE_USER_NAME_MUTATION } from '@/services/user.service';
+import { RootState } from '@/store';
+
 import { CustomUser } from '@/types';
 import { gql } from '@apollo/client';
 import { GetServerSideProps } from 'next';
 import { getSession, useSession } from 'next-auth/react';
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 interface Props {
   userInformations: CustomUser;
 }
 
 const settings: React.FC<Props> = ({ userInformations }) => {
+  const dispatch = useDispatch();
+
   return (
     <div className='container mx-auto grid grid-cols-12 w-full  '>
-      <div className='col-span-6 sm:col-span-0'></div>
-      <div className='md:col-span-6 col-span-12  '>
+      <div className='col-span-6 sm:col-span-3'></div>
+      <div className='md:col-span-7 col-span-12  '>
         <SettingsElement userInformations={userInformations} />
       </div>
     </div>

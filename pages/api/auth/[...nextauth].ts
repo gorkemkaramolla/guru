@@ -89,7 +89,7 @@ export default NextAuth({
           user.at = newUser?.at;
           token.at = user.at;
         }
-        token.userId = user?.id;
+        token.userId = newUser.id;
         token.accessToken = account.access_token;
       } else {
         const payload = {
@@ -105,6 +105,7 @@ export default NextAuth({
     async redirect({ url, baseUrl }: { url: any; baseUrl: any }) {
       return baseUrl;
     },
+
     async session({ session, token }: { session: any; token: any }) {
       // Send properties to the client, like an access_token from a provider.
       if (token && session?.user) {

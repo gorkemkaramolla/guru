@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import NavLink from './NavLink';
 import { useSSR } from '@nextui-org/react';
 import MenuIcon from '@mui/icons-material/MenuRounded';
@@ -7,16 +7,27 @@ import { Button } from '@nextui-org/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useSession, signOut } from 'next-auth/react';
+import { useEffect } from 'react';
 import AccountButton from './AccountButton';
 import Image from 'next/image';
 import SearchBar from './SearchBar';
+import axios from 'axios';
+import { GetServerSideProps } from 'next';
+
 const links: { [key: string]: string } = {
   Discover: 'discover',
   Communities: 'community',
   'How Guru Works': 'about',
   'Create Post ': 'create-post',
 };
-
+interface UserInfo {
+  name: string;
+  at: string;
+  email: string;
+}
+interface Props {
+  userInfo: UserInfo;
+}
 const Navbar = () => {
   const { isBrowser } = useSSR();
   const router = useRouter();
@@ -44,6 +55,7 @@ const Navbar = () => {
   React.useEffect(() => {
     setPathname(router.pathname);
   }, [router.pathname]);
+
   if (isBrowser)
     return (
       <div className=' bg-white dark:bg-black fixed top-0 left-0 right-0 flex py-2 z-[100] justify-around items-center border shadow-sm w-full '>
