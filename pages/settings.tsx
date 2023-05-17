@@ -1,8 +1,5 @@
 import SettingsElement from '@/components/Settings/SettingsElement';
 import { getClient } from '@/lib/client';
-import { setUser } from '@/redux/exampleSlice';
-import { UPDATE_USER_NAME_MUTATION } from '@/services/user.service';
-import { RootState } from '@/store';
 
 import { CustomUser } from '@/types';
 import { gql } from '@apollo/client';
